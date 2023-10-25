@@ -1,5 +1,5 @@
 'use client'
-import { Box,Input,Button, List, ListItem, ListItemText,TextField,Dialog,DialogTitle,DialogContent,DialogActions,Fab} from "@mui/material";
+import { Box,Input,Button, List, ListItem, ListItemText,TextField,Dialog,DialogTitle,DialogContent,DialogActions,Fab, CircularProgress} from "@mui/material";
 import { useState } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -8,25 +8,33 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
-
+import useProducts from './useProduct'
+import { addDoc, collection, getDocs, getFirestore, orderBy, query } from "firebase/firestore";
 export default function ProductList() {
-  const [products, setProducts] = useState([
-    { desc: "咖哩飯", price: 20000 },
-    { desc: "雞肉飯", price: 20000 },
-    { desc: "咖啡自助吧", price: 30000 }
-  ])
-  const [newProduct, setNewProduct] = useState({ visible: false, desc: "", price: 0, editvisible:false })
+  const [products, setProducts, addProduct, isLoading] = useProducts()
+    
+  const [newProduct, setNewProduct] = useState({ visible: false, desc: "", price: 0, type: "", editvisible:false })
   const handleClick = function (e: React.ChangeEvent<HTMLInputElement>) {
-    setNewProduct({ ...newProduct, [e.target.name]: e.target.value })
+    if (e.target.name === "price") {
+      setNewProduct({ ...newProduct, [e.target.name]: parseInt(e.target.value) })
+    }
+    else {
+      setNewProduct({ ...newProduct, [e.target.name]: e.target.value })
+    }
   }
   const show = (index:number) => {
     setNewProduct({ ...newProduct, visible: true})
   }
-
-  const show1 = (index:number) => {
-    setNewProduct({ ...newProduct, editvisible: true})
-  }
-
+  
+  {isLoading ? <CircularProgress /> :
+  <List subheader="Product list" aria-label="product list">
+    {products.map((product) =>
+      <ListItem divider key={product.desc}>
+        <ListItemText primary={product.desc} secondary={product.price}>
+        </ListItemText>
+      </ListItem>)}
+  </List>
+}
   function update() {
     setProducts(() => [...products, newProduct]);
     setNewProduct({ ...newProduct, visible: false })
@@ -40,13 +48,19 @@ export default function ProductList() {
     setProducts(dI)
     console.log(products);
   }
+
+  function add() {
+    addProduct(newProduct);
+    setNewProduct({ ...newProduct, visible: false })
+    console.log(products);
+  }
   const hide = () => {
     setNewProduct({ ...newProduct, visible: false })
   }
   return (
     <Box sx={{
       width: '80vw',
-      height: '100vh',
+      height: '250vh',
       backgroundColor: 'background.paper',
       color: 'black',
       textAlign: 'left'
@@ -58,6 +72,7 @@ export default function ProductList() {
                       <DialogContent>
                         <TextField label="產品描述" variant="outlined" name="desc" value={newProduct.desc} onChange={handleClick} /><p />
                         <TextField label="產品價格" variant="outlined" name="price" value={newProduct.price} onChange={handleClick} /><p />
+                        <TextField label="產品類型" variant="outlined" name="type" value={newProduct.type} onChange={handleClick} /><p />
                       </DialogContent>
                       <DialogActions>
                         <IconButton
@@ -72,7 +87,7 @@ export default function ProductList() {
                           <CloseIcon />
                         </IconButton>
 
-                        <Button variant="contained" color="primary" onClick={update}>新增</Button>
+                        <Button variant="contained" color="primary" onClick={add}>新增</Button>
                       </DialogActions>
                     </Dialog>
         :

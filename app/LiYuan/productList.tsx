@@ -8,12 +8,12 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
-import useProducts from './useProduct'
+import useProducts from './useProduct';
 import { addDoc, collection, getDocs, getFirestore, orderBy, query } from "firebase/firestore";
 export default function ProductList() {
-  const [products, setProducts, addProduct, isLoading] = useProducts()
+  const [products, setProducts, addProduct, deleteProduct,updateProduct, isLoading] = useProducts()
     
-  const [newProduct, setNewProduct] = useState({ visible: false, desc: "", price: 0, type: "", editvisible:false })
+  const [newProduct, setNewProduct] = useState({ visible: false, desc: "", price: 0, type: "",res_name:"" ,editvisible:false })
   const handleClick = function (e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.name === "price") {
       setNewProduct({ ...newProduct, [e.target.name]: parseInt(e.target.value) })
@@ -35,19 +35,8 @@ export default function ProductList() {
       </ListItem>)}
   </List>
 }
-  function update() {
-    setProducts(() => [...products, newProduct]);
-    setNewProduct({ ...newProduct, visible: false })
-    console.log(products);
-  }
 
-  
-  function delete1 (index: number){
-    const dI = [...products]
-    dI.splice(index,1)
-    setProducts(dI)
-    console.log(products);
-  }
+
 
   function add() {
     addProduct(newProduct);
@@ -73,6 +62,7 @@ export default function ProductList() {
                         <TextField label="產品描述" variant="outlined" name="desc" value={newProduct.desc} onChange={handleClick} /><p />
                         <TextField label="產品價格" variant="outlined" name="price" value={newProduct.price} onChange={handleClick} /><p />
                         <TextField label="產品類型" variant="outlined" name="type" value={newProduct.type} onChange={handleClick} /><p />
+                        <TextField label="餐廳名稱" variant="outlined" name="type" value={newProduct.res_name} onChange={handleClick} /><p />
                       </DialogContent>
                       <DialogActions>
                         <IconButton
@@ -99,15 +89,16 @@ export default function ProductList() {
           <List subheader="  菜單" aria-label="product list">
             {products.map((product,index) =>
               <ListItem divider key={product.desc}>
-                <ListItemText primary={product.desc} secondary={product.price}>
+                <ListItemText primary={product.desc} secondary={product.price} >
                 </ListItemText>
                 
                 <IconButton onClick={() => show(2)}>
                 <EditIcon />
                 </IconButton> 
                 
-                <IconButton edge="end" aria-label="delete" onClick={() => delete1(index)}>
-                 <DeleteIcon />
+                <IconButton edge="end" aria-label="delete" onClick={() => deleteProduct(product.id)}>
+                  <DeleteIcon />
+                
                 </IconButton>
               </ListItem>)}
           </List>

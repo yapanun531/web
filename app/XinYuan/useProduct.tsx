@@ -12,7 +12,7 @@ export default function useProducts() {
         async function fetchData() {
             setIsLoading(true);
             let data: Product[] = [];
-            const querySnapshot = await getDocs(collection(db, "LiYuan2"));
+            const querySnapshot = await getDocs(collection(db, "XinYuan"));
             querySnapshot.forEach((doc) => {
                 data.push({ id: doc.id, desc: doc.data().desc, price: doc.data().price, type: doc.data().type, res_name: doc.data().res_name })
                 console.log(`${doc.id} => ${doc.data()}`);
@@ -24,7 +24,7 @@ export default function useProducts() {
     }, [db, updated]);
 
     async function addProduct(product: Product) {
-        const docRef = await addDoc(collection(db, "LiYuan2"),
+        const docRef = await addDoc(collection(db, "XinYuan"),
             { desc: product.desc, price: product.price, type: product.type, res_name: product.res_name });
         console.log("Document written with ID: ", docRef.id);
         setUpdated((currentValue) => currentValue + 1)
@@ -33,7 +33,7 @@ export default function useProducts() {
     async function deleteProduct(id: string) {
         try {
             const db = getFirestore(app);
-            await deleteDoc(doc(db, "LiYuan2", id));
+            await deleteDoc(doc(db, "XinYuan", id));
             setUpdated((currentValue) => currentValue + 1)
         }
         catch (error) {
@@ -44,7 +44,7 @@ export default function useProducts() {
     async function updateProduct(product: Product) {
         try {
             const db = getFirestore(app);
-            await updateDoc(doc(db, "LiYuan2", product.id),
+            await updateDoc(doc(db, "XinYuan", product.id),
                 { desc: product.desc, price: product.price, type: product.type, res_name: product.res_name });
             setUpdated((currentValue) => currentValue + 1)
         }

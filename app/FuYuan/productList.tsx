@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { Box, List, ListItem, ListItemText, TextField, Button, Dialog, DialogActions, DialogTitle, DialogContent, IconButton, Fab, LinearProgress, Tab, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { TabList, TabContext, TabPanel } from '@mui/lab'
+import Image from 'next/image'
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,13 +11,16 @@ import useProducts from './useProduct';
 import { Product } from "../_settings/interfaces";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+
 export default function ProductList() {
     const { products, addProduct, deleteProduct, updateProduct, isLoading, restaurants, selectedRestaurant, handleRestaurantClick } = useProducts();
-    const [newProduct, setNewProduct] = React.useState<Product>({ id: "", desc: "", price: 0, res_name: "", type: "" });
+    const [newProduct, setNewProduct] = React.useState<Product>({ id: "", desc: "", price: 0, res_name: "", type: "", photo: "" });
     const [status, setStatus] = React.useState({ visible: false });
+
     const handleChange = (e: SelectChangeEvent) => {
         setNewProduct({ ...newProduct, res_name: e.target.value as string });
     };
+
     const handleClick = function (e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.name === "price") {
             setNewProduct({ ...newProduct, [e.target.name]: parseInt(e.target.value) })
@@ -25,6 +29,7 @@ export default function ProductList() {
             setNewProduct({ ...newProduct, [e.target.name]: e.target.value })
         }
     }
+
     function addOrUpdate() {
         if (newProduct.id === "") {
             addProduct(newProduct, newProduct.res_name);
@@ -35,19 +40,24 @@ export default function ProductList() {
         setStatus({ ...status, visible: false })
         resetProduct();
     }
+
     const resetProduct = () => {
-        setNewProduct({ id: "", desc: "", price: 0, res_name: "", type: "" })
+        setNewProduct({ id: "", desc: "", price: 0, res_name: "", type: "", photo: "" })
     }
+
     const show = () => {
         setStatus({ ...status, visible: true })
     };
+
     const hide = () => {
         setStatus({ ...status, visible: false })
     };
+
     function setUpdateProduct(product: Product) {
         setNewProduct({ ...product })
         setStatus({ visible: true })
     }
+
     return (
         <Box sx={{
             width: '80vw',
@@ -93,19 +103,21 @@ export default function ProductList() {
                         <div>
                             <TabContext value={selectedRestaurant}>
                                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                    <TabList onChange={handleRestaurantClick} aria-label="lab API tabs example">
-                                        {restaurants.map((restaurant) => (
-                                            <Tab label={restaurant} value={restaurant} />
-                                        ))}
+                                    <TabList onChange={handleRestaurantClick} aria-label="restaurant list">
+                                        <Tab label="八方雲集" value="1" />
+                                        <Tab label="茶墵" value="2" />
+                                        <Tab label="食福簡餐" value="3" />
                                     </TabList>
                                 </Box>
                                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                                     <Button onClick={show} variant='contained'>新增產品</Button>
                                 </div>
-                                <TabPanel value="八方雲集">
+                                <TabPanel value="1">
                                     {products.filter((product) => product.res_name === "八方雲集").map((product) =>
-                                        <List>
-                                            <ListItem divider key={product.id}>
+                                        <List key={product.id}>
+                                            <ListItem key={product.desc} divider>
+                                                <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
+
                                                 <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
 
                                                 <IconButton
@@ -124,10 +136,12 @@ export default function ProductList() {
                                         </List>
                                     )}
                                 </TabPanel>
-                                <TabPanel value="茶墵">
+                                <TabPanel value="2">
                                     {products.filter((product) => product.res_name === "茶墵").map((product) =>
-                                        <List>
-                                            <ListItem divider key={product.id}>
+                                        <List key={product.id}>
+                                            <ListItem key={product.desc} divider>
+                                                <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
+
                                                 <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
 
                                                 <IconButton
@@ -146,10 +160,12 @@ export default function ProductList() {
                                         </List>
                                     )}
                                 </TabPanel>
-                                <TabPanel value="食福簡餐">
+                                <TabPanel value="3">
                                     {products.filter((product) => product.res_name === "食福簡餐").map((product) =>
-                                        <List>
-                                            <ListItem divider key={product.id}>
+                                        <List key={product.id}>
+                                            <ListItem key={product.desc} divider>
+                                                <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
+
                                                 <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
 
                                                 <IconButton

@@ -10,7 +10,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import useProducts from './useProduct';
 import { Product } from "../_settings/interfaces";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
+import axios from "axios";
+import { getAuth } from 'firebase/auth';
 
 export default function ProductList() {
     const { products, addProduct, deleteProduct, updateProduct, isLoading, restaurants, selectedRestaurant, handleRestaurantClick } = useProducts();
@@ -30,12 +31,37 @@ export default function ProductList() {
         }
     }
 
+    async function sendEmail(subject: string, html: string) {
+        try {
+            const response = await axios({
+                method: 'post',
+                url: '/email',
+                data: {
+                    email: getAuth().currentUser?.email,
+                    subject: subject,
+                    html: html
+                },
+            });
+            console.log(response.data.message);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error(error.message);
+            } else {
+                console.error("錯誤");
+            }
+
+        }
+    }
+
     function addOrUpdate() {
         if (newProduct.id === "") {
             addProduct(newProduct, newProduct.res_name);
+            sendEmail("新增產品", `新增產品 ${newProduct.desc} 成功`);
         }
         else {
+            console.log(products)
             updateProduct(newProduct, newProduct.res_name);
+            sendEmail("更新產品", `更新產品 ${newProduct.desc} 成功`);
         }
         setStatus({ ...status, visible: false })
         resetProduct();
@@ -115,7 +141,7 @@ export default function ProductList() {
                                 <TabPanel value="1">
                                     {products.filter((product) => product.res_name === "八方雲集").map((product) =>
                                         <List key={product.id}>
-                                            <ListItem key={product.desc} divider>
+                                            <ListItem key={product.id} divider>
                                                 <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
 
                                                 <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
@@ -129,7 +155,7 @@ export default function ProductList() {
                                                 <IconButton
                                                     edge="end"
                                                     aria-label="delete"
-                                                    onClick={() => deleteProduct(product.id, newProduct.res_name)}>
+                                                    onClick={() => deleteProduct(product.id, product.res_name)}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </ListItem>
@@ -139,7 +165,7 @@ export default function ProductList() {
                                 <TabPanel value="2">
                                     {products.filter((product) => product.res_name === "茶墵").map((product) =>
                                         <List key={product.id}>
-                                            <ListItem key={product.desc} divider>
+                                            <ListItem key={product.id} divider>
                                                 <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
 
                                                 <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
@@ -153,7 +179,7 @@ export default function ProductList() {
                                                 <IconButton
                                                     edge="end"
                                                     aria-label="delete"
-                                                    onClick={() => deleteProduct(product.id, newProduct.res_name)}>
+                                                    onClick={() => deleteProduct(product.id, product.res_name)}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </ListItem>
@@ -163,7 +189,7 @@ export default function ProductList() {
                                 <TabPanel value="3">
                                     {products.filter((product) => product.res_name === "食福簡餐").map((product) =>
                                         <List key={product.id}>
-                                            <ListItem key={product.desc} divider>
+                                            <ListItem key={product.id} divider>
                                                 <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
 
                                                 <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
@@ -177,7 +203,7 @@ export default function ProductList() {
                                                 <IconButton
                                                     edge="end"
                                                     aria-label="delete"
-                                                    onClick={() => deleteProduct(product.id, newProduct.res_name)}>
+                                                    onClick={() => deleteProduct(product.id, product.res_name)}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </ListItem>

@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, updateDoc, getDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore";
 import app from "@/app/_firebase/Config"
 import { useEffect, useState } from "react";
 import { Product } from "../_settings/interfaces";
@@ -33,6 +33,7 @@ export default function useProducts() {
                     const photoURL = await getDownloadURL(starsRef);
 
                     const menuItem = {
+                        id: menu.id,
                         desc: menu.data().desc,
                         price: menu.data().price,
                         type: menu.data().type,
@@ -92,6 +93,6 @@ export default function useProducts() {
         setSelectedRestaurant(restaurantId);
     }
 
-    return { products, addProduct, deleteProduct, updateProduct, handleRestaurantClick, isLoading, restaurants, selectedRestaurant };
+    return { products, addProduct, deleteProduct, updateProduct, handleRestaurantClick, isLoading, restaurants, selectedRestaurant } as const;
 
 }

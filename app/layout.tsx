@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Menu from './menu'
 import ThemeRegistry from './_theme/theme.registory'
+import { AuthContextProvider } from './account/AuthContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,10 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <h1>輔仁大學資訊管理學系</h1>
-        <ThemeRegistry>
-          <Menu />
-          {children}
-        </ThemeRegistry>
+        <AuthContextProvider>
+            <Menu />
+            {children}
+          </AuthContextProvider>
       </body>
     </html>
   )

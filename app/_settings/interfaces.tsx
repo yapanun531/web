@@ -5,4 +5,5 @@ export type Product = {
     price: number;
     visible?: boolean;
     res_name:string;
+    photo:string;
   };

@@ -5,38 +5,67 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useContext } from 'react';
+import { AuthContext } from './account/AuthContext';
 
 export default function Menu() {
     const [value, setValue] = React.useState('1');
     const router = useRouter()
+    const pathname = usePathname();
+    const authContext = useContext(AuthContext);
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
       setValue(newValue);
     };
-
-  return (
-    
-    <div>
-    <Box sx={{ width: '100%', typography: 'body1' }}>
-      <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="誠園" onClick={() => router.push("/ChengYuan")} value="1" />
-            <Tab label="心園" onClick={() => router.push("/XinYuan") }value="2" />
-            <Tab label="理園" onClick={() => router.push("/LiYuan") }value="3" />
-            <Tab label="輔園" onClick={() => router.push("/FuYuan") }value="4" />
-            <Tab label="登入/註冊" onClick={() => router.push("/account") }value="5" />
-          </TabList>
+    if(authContext.displayName == "普通"){
+      return (
+        
+        <div>
+        <Box sx={{ width: '100%', typography: 'body1' }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList onChange={handleChange} aria-label="lab API tabs example">
+                <Tab label="誠園" onClick={() => router.push("/ChengYuanCustomer")} value="1" />
+                <Tab label="心園" onClick={() => router.push("/XinYuanCustomer") }value="2" />
+                <Tab label="理園" onClick={() => router.push("/LiYuanCustomer") }value="3" />
+                <Tab label="輔園" onClick={() => router.push("/FuYuanCustomer") }value="4" />
+                <Tab label="登入/註冊" onClick={() => router.push("/account") }value="5" />
+              </TabList>
+            </Box>
+            <TabPanel value="1">菜單一覽</TabPanel>
+            <TabPanel value="2">菜單一覽</TabPanel>
+            <TabPanel value="3">菜單一覽</TabPanel>
+            <TabPanel value="4">菜單一覽</TabPanel>
+          </TabContext>
         </Box>
-        <TabPanel value="1">菜單一覽A</TabPanel>
-        <TabPanel value="2">菜單一覽</TabPanel>
-        <TabPanel value="3">菜單一覽</TabPanel>
-        <TabPanel value="4">菜單一覽</TabPanel>
-      </TabContext>
-    </Box>
-     
-    </div>
-    
-  );
+        
+        </div>   
+      );
+    }
+    else{
+      return (
+        
+        <div>
+        <Box sx={{ width: '100%', typography: 'body1' }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList onChange={handleChange} aria-label="lab API tabs example">
+                <Tab label="誠園" onClick={() => router.push("/ChengYuan")} value="1" />
+                <Tab label="心園" onClick={() => router.push("/XinYuan") }value="2" />
+                <Tab label="理園" onClick={() => router.push("/LiYuan") }value="3" />
+                <Tab label="輔園" onClick={() => router.push("/FuYuan") }value="4" />
+                <Tab label="登入/註冊" onClick={() => router.push("/account") }value="5" />
+              </TabList>
+            </Box>
+            <TabPanel value="1">菜單一覽</TabPanel>
+            <TabPanel value="2">菜單一覽</TabPanel>
+            <TabPanel value="3">菜單一覽</TabPanel>
+            <TabPanel value="4">菜單一覽</TabPanel>
+          </TabContext>
+        </Box>
+        
+        </div>   
+      );
+    }
 }

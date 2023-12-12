@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { Button, TextField } from '@mui/material';
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import app from "@/app/_firebase/Config"
 import { FirebaseError } from 'firebase/app';
 export default function Account() {
@@ -25,6 +25,7 @@ export default function Account() {
     try {
         if (status === "註冊") {
           const res = await createUserWithEmailAndPassword(auth, account.email, account.password);
+          await updateProfile(res.user, { displayName: "普通" });
           setMessage(`註冊成功，歡迎 ${res.user?.email}`);
           // console.log(res)
         }

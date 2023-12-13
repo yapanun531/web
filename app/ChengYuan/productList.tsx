@@ -86,8 +86,9 @@ export default function ProductList() {
 
     return (
         <Box sx={{
-            width: '80vw',
-            height: '250vh',
+            width: '90vw',
+            height: '54vh',
+            overflow: 'auto',
             backgroundColor: 'background.paper',
             color: 'black',
             textAlign: 'left'

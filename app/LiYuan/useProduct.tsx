@@ -16,12 +16,12 @@ export default function useProducts() {
     useEffect(() => {
         async function fetchData() {
             setIsLoading(true);
-            const querySnapshop = await getDocs(collection(db, "FuYuan"));
+            const querySnapshop = await getDocs(collection(db, "LiYuan"));
             const restaurantList: string[] = [];
             const menuPromises: any[] = []; //等待異步
             let photo = '鍋貼.jpg';
             for (const shop of querySnapshop.docs) {
-                const querySnapshotMenu = await getDocs(collection(db, "FuYuan/" + shop.id + "/menu"));
+                const querySnapshotMenu = await getDocs(collection(db, "LiYuan/" + shop.id + "/menu"));
                 restaurantList.push(shop.id);
 
                 for (const menu of querySnapshotMenu.docs) {
@@ -59,7 +59,7 @@ export default function useProducts() {
 
     //利用子集合menu中的res_name與doc.id一致，找到正確餐廳修改其collection中的資料
     async function addProduct(product: Product, res_name: string) {
-        const docRef = await addDoc(collection(db, `FuYuan/${res_name}/menu`),
+        const docRef = await addDoc(collection(db, `LiYuan/${res_name}/menu`),
             { desc: product.desc, price: product.price, type: product.type, res_name: product.res_name });
         console.log("Document written with ID: ", docRef.id);
         setUpdated((currentValue) => currentValue + 1)
@@ -68,7 +68,7 @@ export default function useProducts() {
     async function deleteProduct(id: string, res_name: string) {
         try {
             const db = getFirestore(app);
-            await deleteDoc(doc(db, `FuYuan/${res_name}/menu`, id));
+            await deleteDoc(doc(db, `LiYuan/${res_name}/menu`, id));
             setUpdated((currentValue) => currentValue + 1)
         }
         catch (error) {
@@ -79,7 +79,7 @@ export default function useProducts() {
     async function updateProduct(product: Product, res_name: string) {
         try {
             const db = getFirestore(app);
-            await updateDoc(doc(db, `FuYuan/${res_name}/menu`, product.id),
+            await updateDoc(doc(db, `LiYuan/${res_name}/menu`, product.id),
                 { desc: product.desc, price: product.price, type: product.type, res_name: product.res_name });
             setUpdated((currentValue) => currentValue + 1)
         }

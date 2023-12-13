@@ -22,10 +22,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <h1>輔仁大學資訊管理學系</h1>
-        <AuthContextProvider>
+        <ThemeRegistry>
+          <AuthContextProvider>
             <Menu />
             {children}
           </AuthContextProvider>
+        </ThemeRegistry>
       </body>
     </html>
   )

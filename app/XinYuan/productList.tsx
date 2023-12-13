@@ -86,8 +86,9 @@ export default function ProductList() {
 
     return (
         <Box sx={{
-            width: '80vw',
-            height: '250vh',
+            width: '90vw',
+            height: '54vh',
+            overflow: 'auto',
             backgroundColor: 'background.paper',
             color: 'black',
             textAlign: 'left'
@@ -102,9 +103,9 @@ export default function ProductList() {
                         <FormControl fullWidth>
                             <InputLabel id="res_name">餐廳名稱</InputLabel>
                             <Select labelId="res_name" label="餐廳名稱" value={newProduct.res_name} onChange={handleChange}>
-                                <MenuItem value="八方雲集">八方雲集</MenuItem>
-                                <MenuItem value="茶墵">茶墵</MenuItem>
-                                <MenuItem value="食福簡餐">食福簡餐</MenuItem>
+                                <MenuItem value="巧瑋鬆餅屋">巧瑋鬆餅屋</MenuItem>
+                                <MenuItem value="麵食部">麵食部</MenuItem>
+                                <MenuItem value="水果部">水果部</MenuItem>
                             </Select>
                         </FormControl>
                     </DialogContent>
@@ -130,16 +131,16 @@ export default function ProductList() {
                             <TabContext value={selectedRestaurant}>
                                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                     <TabList onChange={handleRestaurantClick} aria-label="restaurant list">
-                                        <Tab label="八方雲集" value="1" />
-                                        <Tab label="茶墵" value="2" />
-                                        <Tab label="食福簡餐" value="3" />
+                                        <Tab label="巧瑋鬆餅屋" value="1" />
+                                        <Tab label="麵食部" value="2" />
+                                        <Tab label="水果部" value="3" />
                                     </TabList>
                                 </Box>
                                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                                     <Button onClick={show} variant='contained'>新增產品</Button>
                                 </div>
                                 <TabPanel value="1">
-                                    {products.filter((product) => product.res_name === "八方雲集").map((product) =>
+                                    {products.filter((product) => product.res_name === "巧瑋鬆餅屋").map((product) =>
                                         <List key={product.id}>
                                             <ListItem key={product.id} divider>
                                                 <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
@@ -163,7 +164,7 @@ export default function ProductList() {
                                     )}
                                 </TabPanel>
                                 <TabPanel value="2">
-                                    {products.filter((product) => product.res_name === "茶墵").map((product) =>
+                                    {products.filter((product) => product.res_name === "麵食部").map((product) =>
                                         <List key={product.id}>
                                             <ListItem key={product.id} divider>
                                                 <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
@@ -187,7 +188,7 @@ export default function ProductList() {
                                     )}
                                 </TabPanel>
                                 <TabPanel value="3">
-                                    {products.filter((product) => product.res_name === "食福簡餐").map((product) =>
+                                    {products.filter((product) => product.res_name === "水果部").map((product) =>
                                         <List key={product.id}>
                                             <ListItem key={product.id} divider>
                                                 <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>

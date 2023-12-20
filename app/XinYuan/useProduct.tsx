@@ -10,7 +10,7 @@ export default function useProducts() {
     const [updated, setUpdated] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
-    const [restaurants, setRestaurants] = useState<String[]>([]);
+    const [restaurants, setRestaurants] = useState<string[]>([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState('1');
 
     useEffect(() => {
@@ -19,18 +19,18 @@ export default function useProducts() {
             const querySnapshop = await getDocs(collection(db, "XinYuan"));
             const restaurantList: string[] = [];
             const menuPromises: any[] = []; //等待異步
-            let photo = '鍋貼.jpg';
+            //let photo = '鍋貼.jpg';
             for (const shop of querySnapshop.docs) {
                 const querySnapshotMenu = await getDocs(collection(db, "XinYuan/" + shop.id + "/menu"));
                 restaurantList.push(shop.id);
 
                 for (const menu of querySnapshotMenu.docs) {
-                    if (menu.exists()) {
-                        photo = menu.data().photo ? menu.data().photo : '鍋貼.jpg';
-                    }
+                    //if (menu.exists()) {
+                    //photo = menu.data().photo ? menu.data().photo : '鍋貼.jpg';
+                    //}
 
-                    const starsRef = ref(storage, photo);
-                    const photoURL = await getDownloadURL(starsRef);
+                    //const starsRef = ref(storage, photo);
+                    //const photoURL = await getDownloadURL(starsRef);
 
                     const menuItem = {
                         id: menu.id,
@@ -38,7 +38,7 @@ export default function useProducts() {
                         price: menu.data().price,
                         type: menu.data().type,
                         res_name: menu.data().res_name,
-                        photo: photoURL
+                        //photo: photoURL
                     };
                     menuPromises.push(Promise.resolve(menuItem));
                 }

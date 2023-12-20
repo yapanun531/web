@@ -103,9 +103,9 @@ export default function ProductList() {
                         <FormControl fullWidth>
                             <InputLabel id="res_name">餐廳名稱</InputLabel>
                             <Select labelId="res_name" label="餐廳名稱" value={newProduct.res_name} onChange={handleChange}>
-                                <MenuItem value="八方雲集">八方雲集</MenuItem>
-                                <MenuItem value="茶墵">茶墵</MenuItem>
-                                <MenuItem value="食福簡餐">食福簡餐</MenuItem>
+                                {restaurants.map((restaurant: string) => (
+                                    <MenuItem value={restaurant}>{restaurant}</MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </DialogContent>
@@ -131,86 +131,38 @@ export default function ProductList() {
                             <TabContext value={selectedRestaurant}>
                                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                     <TabList onChange={handleRestaurantClick} aria-label="restaurant list">
-                                        <Tab label="八方雲集" value="1" />
-                                        <Tab label="茶墵" value="2" />
-                                        <Tab label="食福簡餐" value="3" />
+                                        {restaurants.map((restaurant: string) => (
+                                            <Tab label={restaurant} value={restaurant} />
+                                        ))}
                                     </TabList>
                                 </Box>
                                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                                     <Button onClick={show} variant='contained'>新增產品</Button>
                                 </div>
-                                <TabPanel value="1">
-                                    {products.filter((product) => product.res_name === "八方雲集").map((product) =>
-                                        <List key={product.id}>
-                                            <ListItem key={product.id} divider>
-                                                <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
-
-                                                <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
-
-                                                <IconButton
-                                                    edge="end"
-                                                    aria-label="update"
-                                                    onClick={() => setUpdateProduct(product)}>
-                                                    <EditIcon />
-                                                </IconButton>
-                                                <IconButton
-                                                    edge="end"
-                                                    aria-label="delete"
-                                                    onClick={() => deleteProduct(product.id, product.res_name)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </ListItem>
-                                        </List>
-                                    )}
-                                </TabPanel>
-                                <TabPanel value="2">
-                                    {products.filter((product) => product.res_name === "茶墵").map((product) =>
-                                        <List key={product.id}>
-                                            <ListItem key={product.id} divider>
-                                                <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
-
-                                                <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
-
-                                                <IconButton
-                                                    edge="end"
-                                                    aria-label="update"
-                                                    onClick={() => setUpdateProduct(product)}>
-                                                    <EditIcon />
-                                                </IconButton>
-                                                <IconButton
-                                                    edge="end"
-                                                    aria-label="delete"
-                                                    onClick={() => deleteProduct(product.id, product.res_name)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </ListItem>
-                                        </List>
-                                    )}
-                                </TabPanel>
-                                <TabPanel value="3">
-                                    {products.filter((product) => product.res_name === "食福簡餐").map((product) =>
-                                        <List key={product.id}>
-                                            <ListItem key={product.id} divider>
-                                                <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
-
-                                                <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
-
-                                                <IconButton
-                                                    edge="end"
-                                                    aria-label="update"
-                                                    onClick={() => setUpdateProduct(product)}>
-                                                    <EditIcon />
-                                                </IconButton>
-                                                <IconButton
-                                                    edge="end"
-                                                    aria-label="delete"
-                                                    onClick={() => deleteProduct(product.id, product.res_name)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </ListItem>
-                                        </List>
-                                    )}
-                                </TabPanel>
+                                {restaurants.map((restaurant: string) => (
+                                    <TabPanel value={restaurant}>
+                                        {products.filter((product) => product.res_name === restaurant).map((product) =>
+                                            <List key={product.id}>
+                                                <ListItem key={product.id} divider>
+                                                    <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
+                                                    <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
+                                                    <IconButton
+                                                        edge="end"
+                                                        aria-label="update"
+                                                        onClick={() => setUpdateProduct(product)}>
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                    <IconButton
+                                                        edge="end"
+                                                        aria-label="delete"
+                                                        onClick={() => deleteProduct(product.id, product.res_name)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </ListItem>
+                                            </List>
+                                        )}
+                                    </TabPanel>
+                                ))}
                             </TabContext>
 
                             <Fab color="primary" aria-label="Add" onClick={show} sx={{

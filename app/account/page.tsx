@@ -1,10 +1,70 @@
 'use client'
-import React, { useState } from 'react';
+import React, { CSSProperties, useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import app from "@/app/_firebase/Config"
 import { FirebaseError } from 'firebase/app';
+import '../globals.css';
+import { relative } from 'path';
+import {
+  MDBContainer,
+  MDBTabs,
+  MDBTabsItem,
+  MDBTabsLink,
+  MDBTabsContent,
+  MDBTabsPane,
+  MDBBtn,
+  MDBIcon,
+  MDBInput,
+  MDBCheckbox
+}
+from 'mdb-react-ui-kit';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css'
+import "@fortawesome/fontawesome-free/css/all.min.css"
+
+
 export default function Account() {
+  const chineseFontStyle = {
+    fontFamily: 'iansui', // 使用定义的字体名称
+  };
+  const borderStyle: React.CSSProperties = { 
+    
+  };
+  const myStyle: CSSProperties = {
+    boxSizing: 'border-box',
+    border: '7px solid		#D0D0D0',
+    backgroundColor: 'white',
+    width: '50%',
+    marginLeft:'25%'
+    
+   
+  };
+  const sstyle = {
+    paddingTop:'15px',
+    display: 'flex',
+    justifyContent: 'center',
+    fontFamily: 'iansui',
+    
+  }
+
+  const buttonPad ={
+    paddingTop:'15px',
+    paddingLeft:"55px"
+  }
+  const headStyle ={
+    paddingTop:'65px',
+    display: 'flex',
+    justifyContent: 'center'
+  }
+  const fontStyle={
+    fontFamily: 'iansui',
+    fontSize:'17px',
+    color:'White'
+  }
+  const bg={
+    backgroundColor:'#FFECF5'
+  }
+  
   const auth = getAuth(app);
   const [account, setAccount] = useState({ email: "", password: "", name: "" });
   const [message, setMessage] = useState("");
@@ -20,6 +80,12 @@ export default function Account() {
       setStatus("註冊");
     }
   }
+  const statusLogin = function (e: React.MouseEvent<HTMLElement>) {
+      setStatus("登入");
+  }
+  const statusRegister = function (e: React.MouseEvent<HTMLElement>) {
+    setStatus("註冊");
+}
 
   const handleSubmit = async function (e: React.MouseEvent<HTMLElement>) {
     try {
@@ -77,31 +143,56 @@ export default function Account() {
     setMessage("登出成功");
   }
   return (
-    <form>
-      <div>
+    <div style={bg}>
+    <div style={borderStyle}>
+      <h1 style={headStyle}>{status === '註冊' ? "REGISTER" : "LOGIN"}</h1>
+    <form style={myStyle}>
+    <MDBContainer className=" my-5 d-flex flex-column w-50">
+    <MDBTabs pills justify className=' d-flex flex-row justify-content-between'>
+        <MDBTabsItem>
+          <MDBTabsLink style={fontStyle} onClick={statusRegister} color='secondary'>
+            註冊
+          </MDBTabsLink>
+        </MDBTabsItem>
+        <MDBTabsItem>
+          <MDBTabsLink style={fontStyle} onClick={statusLogin} color='primary'>
+            登入
+          </MDBTabsLink>
+        </MDBTabsItem>
+      </MDBTabs>
+      <div style={sstyle} >
         {status === '註冊' && <TextField type="text" name="name" value={account.name}
           placeholder="姓名" label="姓名:" onChange={handleChange} />
         }
       </div>
-      <div>
+      <div style={sstyle}>
         <TextField type="email" name="email" value={account.email}
           placeholder="電子郵件信箱" label="電子郵件信箱:" onChange={handleChange} autoComplete='username' />
       </div>
-      <div>
+      <div style={sstyle}>
         <TextField type="password" name="password" value={account.password}
           placeholder="密碼" label="密碼:" onChange={handleChange} autoComplete='current-password' />
       </div>
-      <div>
+      
+      <div style={buttonPad}>
+        
         <Button variant="contained" color="primary" onClick={handleSubmit}>{status}</Button>
+        {/* <a  color="secondary" onClick={changeStatus}>
+          {status === '註冊' ? "已經註冊，我要登入" : "尚未註冊，我要註冊"}</a> */}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        {status === '登入' ? <Button variant="outlined" color="secondary" onClick={logout} >登出</Button> : null}
       </div>
-      <div>{message}</div>
-      <div>
-        <Button variant="contained" color="secondary" onClick={changeStatus}>
-          {status === '註冊' ? "已經註冊，我要登入" : "尚未註冊，我要註冊"}</Button>
+
+      
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div>{message}</div>
+      
+      <div style={sstyle}>
+        
       </div>
-      <div>
-        <Button variant="contained" color="secondary" onClick={logout}>登出</Button>
-      </div>
+      </MDBContainer>
     </form>
+    
+    </div>
+    </div>
   )
 }

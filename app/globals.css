@@ -92,3 +92,12 @@ a {
     color-scheme: dark;
   }
 }
+
+@font-face {
+  font-family: 'iansui';
+  src: url(./Iansui-Regular.ttf) format('opentype');
+}
+
+h1{
+  font-family: 'iansui';
+}

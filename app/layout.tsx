@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import Menu from './menu'
 import ThemeRegistry from './_theme/theme.registory'
 import { AuthContextProvider } from './account/AuthContext'
+import { Button } from 'antd';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,10 +19,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
+const sss={
+  paddingTop:'17px',
+  paddingLeft:'17px'
+}
   return (
     <html lang="en">
       <body className={inter.className}>
-        <h1>輔仁大學資訊管理學系</h1>
+        <h1 style={sss}>輔仁大學學餐菜單</h1>
         <ThemeRegistry>
           <AuthContextProvider>
             <Menu />

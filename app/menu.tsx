@@ -17,7 +17,7 @@ export default function Menu() {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  if (authContext.displayName == "普通") {
+  if (authContext.displayName == "") {
     return (
 
       <div>
@@ -25,10 +25,10 @@ export default function Menu() {
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="lab API tabs example">
-                <Tab label="誠園" onClick={() => router.push("/ChengYuanCustomer")} value="1" />
-                <Tab label="心園" onClick={() => router.push("/XinYuanCustomer")} value="2" />
-                <Tab label="理園" onClick={() => router.push("/LiYuanCustomer")} value="3" />
-                <Tab label="輔園" onClick={() => router.push("/FuYuanCustomer")} value="4" />
+                <Tab label="誠園" onClick={() => router.push("/ChengYuan")} value="1" />
+                <Tab label="心園" onClick={() => router.push("/XinYuan")} value="2" />
+                <Tab label="理園" onClick={() => router.push("/LiYuan")} value="3" />
+                <Tab label="輔園" onClick={() => router.push("/FuYuan")} value="4" />
                 <Tab label="登入/註冊" onClick={() => router.push("/account")} value="5" />
               </TabList>
             </Box>
@@ -46,10 +46,10 @@ export default function Menu() {
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="lab API tabs example">
-                <Tab label="誠園" onClick={() => router.push("/ChengYuan")} value="1" />
-                <Tab label="心園" onClick={() => router.push("/XinYuan")} value="2" />
-                <Tab label="理園" onClick={() => router.push("/LiYuan")} value="3" />
-                <Tab label="輔園" onClick={() => router.push("/FuYuan")} value="4" />
+                <Tab label="誠園" onClick={() => router.push("/ChengYuanCustomer")} value="1" />
+                <Tab label="心園" onClick={() => router.push("/XinYuanCustomer")} value="2" />
+                <Tab label="理園" onClick={() => router.push("/LiYuanCustomer")} value="3" />
+                <Tab label="輔園" onClick={() => router.push("/FuYuanCustomer")} value="4" />
                 <Tab label="登入/註冊" onClick={() => router.push("/account")} value="5" />
               </TabList>
             </Box>

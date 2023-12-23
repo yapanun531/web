@@ -169,7 +169,7 @@ export default function ProductList() {
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <TabList onChange={handleRestaurantClick} aria-label="restaurant list">
                                     {restaurants.map((restaurant: string) => (
-                                        <Tab label={restaurant} value={restaurant} />
+                                        <Tab label={restaurant} value={restaurant} sx={{ border: 1, borderRadius: 2, margin: 0.5 }} />
                                     ))}
                                 </TabList>
                             </Box>

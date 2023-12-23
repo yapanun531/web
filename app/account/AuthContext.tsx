@@ -20,6 +20,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
       setUserInfo({
         email: user.email ? user.email : '',
         displayName: user.displayName ? user.displayName : '',
+
       });
     } else {
       setUserInfo({

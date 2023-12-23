@@ -14,6 +14,8 @@ export default function Menu() {
   const pathname = usePathname();
   const authContext = useContext(AuthContext);
 
+  
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -21,7 +23,7 @@ export default function Menu() {
     return (
 
       <div>
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%'}}>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -30,6 +32,7 @@ export default function Menu() {
                 <Tab label="理園" onClick={() => router.push("/LiYuanCustomer")} value="3" />
                 <Tab label="輔園" onClick={() => router.push("/FuYuanCustomer")} value="4" />
                 <Tab label="登入/註冊" onClick={() => router.push("/account")} value="5" />
+                <Tab label="菜單管理" onClick={() => router.push("/menuChange")} value="6" />
               </TabList>
             </Box>
           </TabContext>
@@ -42,7 +45,7 @@ export default function Menu() {
     return (
 
       <div>
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%'}}>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -51,6 +54,7 @@ export default function Menu() {
                 <Tab label="理園" onClick={() => router.push("/LiYuan")} value="3" />
                 <Tab label="輔園" onClick={() => router.push("/FuYuan")} value="4" />
                 <Tab label="登入/註冊" onClick={() => router.push("/account")} value="5" />
+                <Tab label="菜單管理" onClick={() => router.push("/menuChange")} value="6" />
               </TabList>
             </Box>
           </TabContext>

@@ -24,9 +24,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css"
 
 
 export default function Account() {
-  const chineseFontStyle = {
-    fontFamily: 'iansui', // 使用定义的字体名称
-  };
+  
   const borderStyle: React.CSSProperties = { 
     
   };
@@ -57,13 +55,11 @@ export default function Account() {
     justifyContent: 'center'
   }
   const fontStyle={
-    fontFamily: 'iansui',
+    fontFamily: '游明朝',
     fontSize:'17px',
     color:'White'
   }
-  const bg={
-    backgroundColor:'#FFECF5'
-  }
+
   
   const auth = getAuth(app);
   const [account, setAccount] = useState({ email: "", password: "", name: "" });
@@ -91,7 +87,7 @@ export default function Account() {
     try {
         if (status === "註冊") {
           const res = await createUserWithEmailAndPassword(auth, account.email, account.password);
-          await updateProfile(res.user, { displayName: "普通" });
+          await updateProfile(res.user, { displayName: account.name });
           setMessage(`註冊成功，歡迎 ${res.user?.email}`);
           // console.log(res)
         }
@@ -143,7 +139,7 @@ export default function Account() {
     setMessage("登出成功");
   }
   return (
-    <div style={bg}>
+    <div>
     <div style={borderStyle}>
       <h1 style={headStyle}>{status === '註冊' ? "REGISTER" : "LOGIN"}</h1>
     <form style={myStyle}>

@@ -92,12 +92,26 @@ a {
     color-scheme: dark;
   }
 }
-
 @font-face {
-  font-family: 'iansui';
-  src: url(./Iansui-Regular.ttf) format('opentype');
+  font-family: 'iansui';  /* 字體名稱 */
+  src: url('./Iansui-Regular.ttf') 
 }
 
+
 h1{
-  font-family: 'iansui';
+  font-family: '游明朝';
+}
+
+h4{
+  font-family: '游明朝';
+}
+
+h6{
+  font-family: '游明朝';
+}
+h5{
+  font-family: '游明朝';
+}
+.sidebar{
+  min-width: 10px;
 }

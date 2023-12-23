@@ -1,9 +1,8 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore";
 import app from "@/app/_firebase/Config"
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "../_settings/interfaces";
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
-import { MenuItemType } from "antd/es/menu/hooks/useItems";
 
 export default function useProducts() {
     const db = getFirestore(app);
@@ -12,36 +11,15 @@ export default function useProducts() {
     const [isLoading, setIsLoading] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
     const [restaurants, setRestaurants] = useState<string[]>([]);
-    const [types, setTypes] = useState<MenuItem[]>([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState('1');
-    const [selectedType, setSelectedType] = useState('1');
-    interface MenuItem {
-        restaurant: string;
-        type: string;
-    }
-
-    function addMenuItem(menuItems: MenuItem[], restaurant: string, type: string): MenuItem[] {
-        // 檢查是否已經存在相同的餐廳和類型
-        const isDuplicate = menuItems.some(item => item.restaurant === restaurant && item.type === type);
-
-        if (!isDuplicate) {
-            const newMenuItem: MenuItem = { restaurant, type };
-            return [...menuItems, newMenuItem];
-        }
-
-        // 如果已經存在相同的餐廳和類型，返回原始列表
-        return menuItems;
-    }
 
     useEffect(() => {
         async function fetchData() {
             setIsLoading(true);
             const querySnapshop = await getDocs(collection(db, "LiYuan"));
             const restaurantList: string[] = [];
-            let typeList: MenuItem[] = [];
             const menuPromises: any[] = []; //等待異步
             //let photo = '鍋貼.jpg';
-
             for (const shop of querySnapshop.docs) {
                 const querySnapshotMenu = await getDocs(collection(db, "LiYuan/" + shop.id + "/menu"));
                 restaurantList.push(shop.id);
@@ -53,7 +31,6 @@ export default function useProducts() {
 
                     //const starsRef = ref(storage, photo);
                     //const photoURL = await getDownloadURL(starsRef);
-                    typeList = addMenuItem(typeList, menu.data().res_name, menu.data().type);
 
                     const menuItem = {
                         id: menu.id,
@@ -75,7 +52,6 @@ export default function useProducts() {
             })
             //});
             setRestaurants(restaurantList);
-            setTypes(typeList);
             setIsLoading(false);
         }
         fetchData();
@@ -114,14 +90,9 @@ export default function useProducts() {
     }
 
     const handleRestaurantClick = async (event: React.SyntheticEvent, restaurantId: string) => {
-        setSelectedType("all");
         setSelectedRestaurant(restaurantId);
     }
 
-    const handleTypeClick = async (event: React.SyntheticEvent, typeId: string) => {
-        setSelectedType(typeId);
-    }
-
-    return { products, addProduct, deleteProduct, updateProduct, handleRestaurantClick, handleTypeClick, isLoading, restaurants, selectedRestaurant, selectedType, types } as const;
+    return { products, addProduct, deleteProduct, updateProduct, handleRestaurantClick, isLoading, restaurants, selectedRestaurant } as const;
 
 }

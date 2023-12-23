@@ -5,6 +5,12 @@ import Menu from './menu'
 import ThemeRegistry from './_theme/theme.registory'
 import { AuthContextProvider } from './account/AuthContext'
 import { Button } from 'antd';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css'
+import "@fortawesome/fontawesome-free/css/all.min.css"
+import React from 'react'
+import Icon from './icon'
+
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,13 +26,31 @@ export default function RootLayout({
 }) {
 
 const sss={
+  display: 'flex',
   paddingTop:'17px',
-  paddingLeft:'17px'
+  paddingLeft:'17px',
+  backgroundColor:'#FF95CA'
+
 }
+
+const icon={
+  paddingLeft:'60%'
+  
+}
+
+
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <h1 style={sss}>輔仁大學學餐菜單</h1>
+        <div style={sss}>
+        <h1>輔仁大學學餐菜單</h1>
+        <div  style={icon}>
+        <AuthContextProvider>
+        <Icon/>
+        </AuthContextProvider>
+        </div>
+        </div>
         <ThemeRegistry>
           <AuthContextProvider>
             <Menu />
@@ -34,6 +58,7 @@ const sss={
           </AuthContextProvider>
         </ThemeRegistry>
       </body>
+      
     </html>
   )
 }

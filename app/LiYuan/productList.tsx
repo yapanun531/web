@@ -1,10 +1,10 @@
 'use client';
 import * as React from 'react';
-import { Box, List, ListItem, ListItemText, LinearProgress, Tab } from "@mui/material";
+import { List, ListItem, ListItemText, LinearProgress, Tab } from "@mui/material";
 import { TabList, TabContext, TabPanel } from '@mui/lab'
 import Image from 'next/image'
 import useProducts from './useProduct';
-import { Menu, MenuItem, Sidebar, SubMenu } from 'react-pro-sidebar';
+import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
 import '../globals.css';
 
 export default function ProductList() {
@@ -47,7 +47,6 @@ export default function ProductList() {
                                             <Tab key={type.type} label={type.type} value={type.type} sx={{ border: 1, borderRadius: 2, backgroundColor: selectedType === type.type ? "#D0D0D0" : "" }} />
                                         )}
                                     </TabList>
-
                                     {products.filter((product) => product.res_name === restaurant && (selectedType === "all" || product.type === selectedType)).map((product) =>
                                         <List key={product.id}>
                                             <ListItem key={product.id} divider>

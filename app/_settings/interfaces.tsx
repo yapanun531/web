@@ -12,3 +12,10 @@ export type MenuItems = {
   restaurant: string;
   type: string;
 }
+
+export type Store = {
+  id: string;
+  name: string;
+  account:string;
+  password: string;
+}

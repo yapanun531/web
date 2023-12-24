@@ -1,6 +1,6 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore";
 import app from "@/app/_firebase/Config"
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "../_settings/interfaces";
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 

@@ -6,6 +6,7 @@ export type Product = {
   visible?: boolean;
   res_name: string;
   photo: string;
+  hearts: number;
 };
 
 export type MenuItems = {

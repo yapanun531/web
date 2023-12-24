@@ -33,6 +33,7 @@ export default function Menu() {
                 <Tab label="輔園" onClick={() => router.push("/FuYuanCustomer")} value="4" />
                 <Tab label="登入/註冊" onClick={() => router.push("/account")} value="5" />
                 <Tab label="菜單管理" onClick={() => router.push("/menuChange")} value="6" />
+                <Tab label="排行榜" onClick={() => router.push("/RankingList")} value="7" />
               </TabList>
             </Box>
           </TabContext>
@@ -55,6 +56,7 @@ export default function Menu() {
                 <Tab label="輔園" onClick={() => router.push("/FuYuan")} value="4" />
                 <Tab label="登入/註冊" onClick={() => router.push("/account")} value="5" />
                 <Tab label="菜單管理" onClick={() => router.push("/menuChange")} value="6" />
+                <Tab label="排行榜" onClick={() => router.push("/RankingList")} value="7" />
               </TabList>
             </Box>
           </TabContext>

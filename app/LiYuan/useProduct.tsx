@@ -3,7 +3,6 @@ import app from "@/app/_firebase/Config"
 import { SetStateAction, useEffect, useState } from "react";
 import { Product } from "../_settings/interfaces";
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
-import { MenuItemType } from "antd/es/menu/hooks/useItems";
 
 export default function useProducts() {
     const db = getFirestore(app);

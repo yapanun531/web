@@ -86,7 +86,13 @@ export default function ProductList() {
                                     <Grid container spacing={2}>
                                         {currentProducts.map((product) => (
                                             <Grid key={product.id} item xs={6}>
-                                                <Box sx={{ border: 1, borderRadius: 2, p: 2 }}>
+                                                <Box sx={{
+                                                            border: 1,
+                                                            borderRadius: 2,
+                                                            p: 2,
+                                                            width: '600px',
+                                                            hieght: '200px',
+                                                        }}>
                                                     <Image
                                                         src={product.photo}
                                                         alt="Image"

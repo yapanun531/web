@@ -1,56 +1,65 @@
 'use client';
 import * as React from 'react';
-import { useState } from 'react';
-import { Box, Paper, List, ListItem, ListItemText, LinearProgress, Tab, Grid } from "@mui/material";
+import { useState, useEffect } from 'react';
+import { Box, Paper, LinearProgress, Tab, Grid, ListItemText } from "@mui/material";
 import { TabList, TabContext, TabPanel } from '@mui/lab'
 import Image from 'next/image'
 import useProducts from './useProduct';
 import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
 import '../globals.css';
+import { Product } from '../_settings/interfaces';
 
 export default function ProductList() {
     const { products, isLoading, selectedRestaurant, handleRestaurantClick, restaurants, types, selectedType, handleTypeClick } = useProducts();
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState<Record<string, number>>({});
+    const [currentType, setCurrentType] = useState<string>('all'); // 新增 currentType 狀態
 
-    const flex = {
-        display: 'flex',
-    }
-    const bar = {
-        height: '100%',
-        backgroundColor: '#D0D0D0',
-        fontFamily: 'iansui'
-    }
+    useEffect(() => {
+        setCurrentPage((prevPages) => ({
+            ...prevPages,
+            [selectedType]: prevPages[selectedType] || 1,
+        }));
+        setCurrentType(selectedType); // 更新 currentType
+    }, [selectedType]);
 
-    const border = {
-        borderLeft: '2px solid #8E8E8E'
-    }
+    useEffect(() => {
+        const pageSize = 8;
+        const startIndex = (currentPage[currentType] - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
 
-    const pageSize = 8;
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const currentProducts = products
-        .filter(
-            (product) =>
-                product.res_name === selectedRestaurant &&
-                (selectedType === 'all' || product.type === selectedType)
-        )
-        .slice(startIndex, endIndex);
+        const filteredProducts = products
+            .filter(
+                (product) =>
+                    product.res_name === selectedRestaurant &&
+                    (currentType === 'all' || product.type === currentType)
+            );
 
-    const pageCount = Math.ceil(products.length / pageSize);
+        setCurrentProducts(filteredProducts.slice(startIndex, endIndex));
+        setPageCount(Math.ceil(filteredProducts.length / pageSize));
+    }, [currentPage, currentType, selectedRestaurant, products]);
 
     const handleNextPage = () => {
-        setCurrentPage((prevPage) => Math.min(prevPage + 1, pageCount));
+        setCurrentPage((prevPages) => ({
+            ...prevPages,
+            [currentType]: Math.min(prevPages[currentType] + 1, pageCount),
+        }));
     };
 
     const handlePrevPage = () => {
-        setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+        setCurrentPage((prevPages) => ({
+            ...prevPages,
+            [currentType]: Math.max(prevPages[currentType] - 1, 1),
+        }));
     };
+
+    const [currentProducts, setCurrentProducts] = useState<Product[]>([]);
+    const [pageCount, setPageCount] = useState<number>(0);
 
     return (
         <div>
             {isLoading ? <LinearProgress /> :
-                <div style={flex}>
-                    <Sidebar style={bar}>
+                <div style={{ display: 'flex' }}>
+                    <Sidebar style={{ height: '100%', backgroundColor: '#D0D0D0', fontFamily: 'iansui' }}>
                         <Menu>
                             {restaurants.map((restaurant: string) => (
                                 <MenuItem key={restaurant} onClick={(event) => handleRestaurantClick(event, restaurant)}>
@@ -60,16 +69,19 @@ export default function ProductList() {
                         </Menu>
                     </Sidebar>
 
-                    <Paper style={border}>
+                    <Paper style={{ borderLeft: '2px solid #8E8E8E' }}>
                         <TabContext value={selectedRestaurant}>
                             {restaurants.map((restaurant: string) => (
                                 <TabPanel key={restaurant} value={restaurant}>
-                                    <TabList onChange={handleTypeClick} aria-label="type list">
-                                        <Tab key="全部" label="全部" value="all" sx={{ border: 1, borderRadius: 2, backgroundColor: selectedType === "all" ? "#D0D0D0" : "" }} />
+                                    <TabList onChange={(event, newType) => handleTypeClick(event, newType)} aria-label="type list">
+                                        <Tab key="全部" label="全部" value="all" sx={{ border: 1, borderRadius: 2, backgroundColor: currentType === "all" ? "#D0D0D0" : "" }} />
                                         {types.filter((type) => type.restaurant === restaurant).map((type) =>
-                                            <Tab key={type.type} label={type.type} value={type.type} sx={{ border: 1, borderRadius: 2, backgroundColor: selectedType === type.type ? "#D0D0D0" : "" }} />
+                                            <Tab key={type.type} label={type.type} value={type.type} sx={{ border: 1, borderRadius: 2, backgroundColor: currentType === type.type ? "#D0D0D0" : "" }} />
                                         )}
                                     </TabList>
+
+                                    {/* 間隔*/}
+                                    <div style={{margin: '20px' }}></div>
 
                                     <Grid container spacing={2}>
                                         {currentProducts.map((product) => (
@@ -96,11 +108,14 @@ export default function ProductList() {
                                             </Grid>
                                         ))}
                                     </Grid>
-
+                                    
+                                    {/* 間隔*/}
+                                    <div style={{margin: '20px' }}></div>
+                                    
                                     <div>
-                                        <button onClick={handlePrevPage} disabled={currentPage === 1}>上一頁</button>
-                                        <span>{` 第 ${currentPage} 頁 / 共 ${pageCount} 頁 `}</span>
-                                        <button onClick={handleNextPage} disabled={currentPage === pageCount}>下一頁</button>
+                                        <button onClick={handlePrevPage} disabled={currentPage[currentType] === 1}>上一頁</button>
+                                        <span>{` 第 ${currentPage[currentType]} 頁 / 共 ${pageCount} 頁 `}</span>
+                                        <button onClick={handleNextPage} disabled={currentPage[currentType] === pageCount}>下一頁</button>
                                     </div>
                                 </TabPanel>
                             ))}

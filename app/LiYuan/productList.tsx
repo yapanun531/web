@@ -52,6 +52,24 @@ export default function ProductList() {
         }));
     };
 
+    const handleTypeClickRestartPageNumber = async (event: React.SyntheticEvent, typeId: string) => {
+        handleTypeClick(event,typeId);
+        setCurrentPage((prevPages) => ({
+            ...prevPages,
+            [currentType]:1,
+        }));
+
+    }
+
+    const handleRestaurantClickRestartPageNumber = async (event: React.SyntheticEvent, typeId: string) => {
+        handleRestaurantClick(event,typeId);
+        setCurrentPage((prevPages) => ({
+            ...prevPages,
+            [currentType]:1,
+        }));
+
+    }
+
     const [currentProducts, setCurrentProducts] = useState<Product[]>([]);
     const [pageCount, setPageCount] = useState<number>(0);
 
@@ -62,7 +80,7 @@ export default function ProductList() {
                     <Sidebar style={{ height: '100%', backgroundColor: '#D0D0D0', fontFamily: 'iansui' }}>
                         <Menu>
                             {restaurants.map((restaurant: string) => (
-                                <MenuItem key={restaurant} onClick={(event) => handleRestaurantClick(event, restaurant)}>
+                                <MenuItem key={restaurant} onClick={(event) => handleRestaurantClickRestartPageNumber(event, restaurant)}>
                                     {restaurant}
                                 </MenuItem>
                             ))}
@@ -73,7 +91,7 @@ export default function ProductList() {
                         <TabContext value={selectedRestaurant}>
                             {restaurants.map((restaurant: string) => (
                                 <TabPanel key={restaurant} value={restaurant}>
-                                    <TabList onChange={(event, newType) => handleTypeClick(event, newType)} aria-label="type list">
+                                    <TabList onChange={(event, newType) => handleTypeClickRestartPageNumber(event, newType)} aria-label="type list">
                                         <Tab key="全部" label="全部" value="all" sx={{ border: 1, borderRadius: 2, backgroundColor: currentType === "all" ? "#D0D0D0" : "" }} />
                                         {types.filter((type) => type.restaurant === restaurant).map((type) =>
                                             <Tab key={type.type} label={type.type} value={type.type} sx={{ border: 1, borderRadius: 2, backgroundColor: currentType === type.type ? "#D0D0D0" : "" }} />

@@ -5,7 +5,7 @@ import { Store } from "../_settings/interfaces";
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import React from "react";
 
-export default function setAccounts() {
+export default function SetAccounts() {
     const db = getFirestore(app);
     const storage = getStorage(app);
     const [updated, setUpdated] = useState(0);

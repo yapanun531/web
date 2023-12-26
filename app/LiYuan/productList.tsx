@@ -10,6 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import '../globals.css';
 import { Product } from '../_settings/interfaces';
+import { MDBBtn } from 'mdb-react-ui-kit';
 
 export default function ProductList() {
     const { products, isLoading, selectedRestaurant, handleRestaurantClick, restaurants, types, selectedType, handleTypeClick, updateProduct } = useProducts();
@@ -123,13 +124,7 @@ export default function ProductList() {
                                                     width: '600px',
                                                     hieght: '200px',
                                                 }}>
-                                                    <Image
-                                                        src={product.photo}
-                                                        alt="Image"
-                                                        priority={true}
-                                                        width={50}
-                                                        height={50}
-                                                    />
+                                                    
                                                     <ListItemText
                                                         primary={product.desc}
                                                         secondary={
@@ -154,9 +149,9 @@ export default function ProductList() {
                                     <div style={{ margin: '20px' }}></div>
 
                                     <div>
-                                        <button onClick={handlePrevPage} disabled={currentPage[currentType] === 1}>上一頁</button>
-                                        <span>{` 第 ${currentPage[currentType]} 頁 / 共 ${pageCount} 頁 `}</span>
-                                        <button onClick={handleNextPage} disabled={currentPage[currentType] === pageCount}>下一頁</button>
+                                    <MDBBtn style={{fontFamily:'iansui'}} color='dark' onClick={handlePrevPage} disabled={currentPage[currentType] === 1}>上一頁</MDBBtn >
+                                        <span style={{fontFamily:'iansui'}}>{` 第 ${currentPage[currentType]} 頁 / 共 ${pageCount} 頁 `}</span>
+                                        <MDBBtn style={{fontFamily:'iansui'}} onClick={handleNextPage} disabled={currentPage[currentType] === pageCount}>下一頁</MDBBtn >
                                     </div>
                                 </TabPanel>
                             ))}

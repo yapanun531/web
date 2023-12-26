@@ -7,7 +7,7 @@ import { AuthContext } from './account/AuthContext';
 import { useContext } from 'react';
 
 
-export default function icon(){
+export default function Icon(){
     
     const router = useRouter()
     const authContext = useContext(AuthContext);
@@ -20,14 +20,17 @@ export default function icon(){
         paddingLeft:'12px'
     }
 
+    const sssss={
+        paddingTop:'12px',
+    }
     
 
-    if(authContext.displayName!= null ){
+    if(authContext.displayName!="" ){
         if (authContext.displayName == "普通") {    
             return(
                 <div  style={sss}>
                 <i className="fas fa-circle-user fa-3x" onClick={() => router.push("/account")}></i>
-                <h5 style={ssss}>使用者 {authContext.email}，您好</h5>
+                <h5 style={sssss}>使用者 {authContext.email}，您好</h5>
                 </div>
             
             )
@@ -45,10 +48,12 @@ export default function icon(){
 
 
     else{
+        return(
         <div style={sss}>
                 <i className="fas fa-circle-user fa-3x" onClick={() => router.push("/account")}></i>
-                <h5 style={ssss}>登入</h5>
+                <h5 style={ssss}>登入/註冊</h5>
                 </div>
+        )
     }
 }
 

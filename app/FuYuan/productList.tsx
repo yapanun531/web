@@ -1,217 +1,171 @@
 'use client';
 import * as React from 'react';
-import { Box, List, ListItem, ListItemText, TextField, Button, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, IconButton, Fab, LinearProgress, Tab, MenuItem, InputLabel, FormControl } from "@mui/material";
+import { useState, useEffect } from 'react';
+import { Box, Paper, LinearProgress, Tab, Grid, ListItemText, IconButton } from "@mui/material";
 import { TabList, TabContext, TabPanel } from '@mui/lab'
 import Image from 'next/image'
-import CloseIcon from '@mui/icons-material/Close';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import useProducts from './useProduct';
-import { Product } from "../_settings/interfaces";
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import axios from "axios";
-import { getAuth } from 'firebase/auth';
+import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import '../globals.css';
+import { Product } from '../_settings/interfaces';
+import { MDBBtn } from 'mdb-react-ui-kit';
 
 export default function ProductList() {
-    const { products, addProduct, deleteProduct, updateProduct, isLoading, restaurants, selectedRestaurant, handleRestaurantClick } = useProducts();
-    const [newProduct, setNewProduct] = React.useState<Product>({ id: "", desc: "", price: 0, res_name: "", type: "", photo: "" });
-    const [addOrUpdateDialogOpen, setAddOrUpdateDialogOpen] = React.useState<boolean>(false);
-    const [deleteDialogOpen, setDeleteDialogOpen] = React.useState<boolean>(false);
+    const { products, isLoading, selectedRestaurant, handleRestaurantClick, restaurants, types, selectedType, handleTypeClick, updateProduct } = useProducts();
+    const [currentPage, setCurrentPage] = useState<Record<string, number>>({});
+    const [currentType, setCurrentType] = useState<string>('all');
+    const [likedProducts, setLikedProducts] = useState<string[]>([]);
 
-    const handleChange = (e: SelectChangeEvent) => {
-        setNewProduct({ ...newProduct, res_name: e.target.value as string });
+    useEffect(() => {
+        setCurrentPage((prevPages) => ({
+            ...prevPages,
+            [selectedType]: prevPages[selectedType] || 1,
+        }));
+        setCurrentType(selectedType);
+    }, [selectedType]);
+
+    useEffect(() => {
+        const pageSize = 8;
+        const startIndex = (currentPage[currentType] - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+
+        const filteredProducts = products
+            .filter(
+                (product) =>
+                    product.res_name === selectedRestaurant &&
+                    (currentType === 'all' || product.type === currentType)
+            );
+
+        setCurrentProducts(filteredProducts.slice(startIndex, endIndex));
+        setPageCount(Math.ceil(filteredProducts.length / pageSize));
+    }, [currentPage, currentType, selectedRestaurant, products]);
+
+    const handleNextPage = () => {
+        setCurrentPage((prevPages) => ({
+            ...prevPages,
+            [currentType]: Math.min(prevPages[currentType] + 1, pageCount),
+        }));
     };
 
-    const handleClick = function (e: React.ChangeEvent<HTMLInputElement>) {
-        if (e.target.name === "price") {
-            setNewProduct({ ...newProduct, [e.target.name]: parseInt(e.target.value) })
-        }
-        else {
-            setNewProduct({ ...newProduct, [e.target.name]: e.target.value })
-        }
-    }
-
-    async function sendEmail(subject: string, html: string) {
-        try {
-            const response = await axios({
-                method: 'post',
-                url: '/email',
-                data: {
-                    email: getAuth().currentUser?.email,
-                    subject: subject,
-                    html: html
-                },
-            });
-            console.log(response.data.message);
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.error(error.message);
-            } else {
-                console.error("錯誤");
-            }
-
-        }
-    }
-
-    const handleOpenAddOrUpdateDialog = () => {
-        setAddOrUpdateDialogOpen(true);
+    const handlePrevPage = () => {
+        setCurrentPage((prevPages) => ({
+            ...prevPages,
+            [currentType]: Math.max(prevPages[currentType] - 1, 1),
+        }));
     };
 
-    const handleCloseAddOrUpdateDialog = () => {
-        setAddOrUpdateDialogOpen(false);
-        resetProduct();
-    };
+    const [currentProducts, setCurrentProducts] = useState<Product[]>([]);
+    const [pageCount, setPageCount] = useState<number>(0);
 
-    const handleOpenDeleteDialog = () => {
-        setDeleteDialogOpen(true);
-    };
+    const [userLikes, setUserLikes] = useState<Record<string, boolean>>({});
 
-    const handleCloseDeleteDialog = () => {
-        setDeleteDialogOpen(false);
-    };
-
-    function addOrUpdate() {
-        if (newProduct.id === "") {
-            addProduct(newProduct, newProduct.res_name);
-            sendEmail("新增產品", `新增產品 ${newProduct.desc} 成功`);
+    const handleHeartClick = async (productId: string) => {
+        const liked = userLikes[productId] || false;
+    
+        const updatedProducts = currentProducts.map((product) => {
+          if (product.id === productId) {
+            const newHearts = liked ? product.hearts - 1 : product.hearts + 1;
+            return {
+              ...product,
+              heartClicked: !liked,
+              hearts: newHearts,
+            };
+          }
+          return product;
+        });
+    
+        setCurrentProducts(updatedProducts);
+    
+        const updatedProduct = updatedProducts.find((product) => product.id === productId);
+        if (updatedProduct) {
+          updateProduct(updatedProduct, selectedRestaurant);
         }
-        else {
-            console.log(products)
-            updateProduct(newProduct, newProduct.res_name);
-            sendEmail("更新產品", `更新產品 ${newProduct.desc} 成功`);
-        }
-        handleCloseAddOrUpdateDialog();
-        resetProduct();
-    }
-
-    const resetProduct = () => {
-        setNewProduct({ id: "", desc: "", price: 0, res_name: "", type: "", photo: "" })
-    }
-
-    function setUpdateProduct(product: Product) {
-        setNewProduct({ ...product })
-        handleOpenAddOrUpdateDialog();
-    }
-
-    function setDeleteProduct(product: Product) {
-        setNewProduct({ ...product })
-        handleOpenDeleteDialog();
-    }
-
-    function checkDeleteProduct() {
-        deleteProduct(newProduct.id, newProduct.res_name);
-        handleCloseDeleteDialog();
-        resetProduct();
-    }
+    
+        setUserLikes((prevUserLikes) => ({ ...prevUserLikes, [productId]: !liked }));
+      };
 
     return (
-        <Box sx={{
-            width: '90vw',
-            height: '54vh',
-            overflow: 'auto',
-            backgroundColor: 'background.paper',
-            color: 'black',
-            textAlign: 'left'
-        }}>
-            <Dialog open={addOrUpdateDialogOpen} onClose={handleCloseAddOrUpdateDialog} aria-labelledby={newProduct.id === "" ? "新增產品" : "編輯產品"}>
-                <DialogTitle>{newProduct.id === "" ? "新增產品" : "更新產品"}</DialogTitle>
-                <DialogContent>
-                    <TextField label="產品描述" variant="outlined" name="desc" value={newProduct.desc} onChange={handleClick} /><p />
-                    <TextField type="number" label="產品價格" variant="outlined" name="price" value={newProduct.price} onChange={handleClick} /><p />
-                    <TextField label="產品類型" variant="outlined" name="type" value={newProduct.type} onChange={handleClick} /><p />
-                    <FormControl fullWidth>
-                        <InputLabel id="res_name">餐廳名稱</InputLabel>
-                        <Select labelId="res_name" label="餐廳名稱" value={newProduct.res_name} onChange={handleChange}>
+        <div>
+            {isLoading ? <LinearProgress /> :
+                <div style={{ display: 'flex' }}>
+                    <Sidebar style={{ height: '100%', backgroundColor: '#D0D0D0', fontFamily: 'iansui' }}>
+                        <Menu>
                             {restaurants.map((restaurant: string) => (
-                                <MenuItem value={restaurant}>{restaurant}</MenuItem>
+                                <MenuItem key={restaurant} onClick={(event) => handleRestaurantClick(event, restaurant)}>
+                                    {restaurant}
+                                </MenuItem>
                             ))}
-                        </Select>
-                    </FormControl>
-                </DialogContent>
-                <DialogActions>
-                    <IconButton
-                        aria-label="close"
-                        onClick={handleCloseAddOrUpdateDialog}
-                        sx={{
-                            position: 'absolute',
-                            right: 8,
-                            top: 8,
-                        }}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                    <Button variant="contained" color="primary" onClick={addOrUpdate}>{newProduct.id === "" ? "新增產品" : "更新產品"}</Button>
-                </DialogActions>
-            </Dialog>
+                        </Menu>
+                    </Sidebar>
 
-            <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-                <DialogTitle>確認刪除？</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        確定要刪除這個項目嗎？這個操作無法撤銷。
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDeleteDialog} color="primary">
-                        取消
-                    </Button>
-                    <Button onClick={checkDeleteProduct} color="secondary">
-                        確定
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-            <div>
-                {isLoading ? <LinearProgress /> :
-                    <div>
+                    <Paper style={{ borderLeft: '2px solid #8E8E8E' }}>
                         <TabContext value={selectedRestaurant}>
-                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                <TabList onChange={handleRestaurantClick} aria-label="restaurant list">
-                                    {restaurants.map((restaurant: string) => (
-                                        <Tab label={restaurant} value={restaurant} />
-                                    ))}
-                                </TabList>
-                            </Box>
-                            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                                <Button onClick={handleOpenAddOrUpdateDialog} variant='contained'>新增產品</Button>
-                            </div>
                             {restaurants.map((restaurant: string) => (
-                                <TabPanel value={restaurant}>
-                                    {products.filter((product) => product.res_name === restaurant).map((product) =>
-                                        <List key={product.id}>
-                                            <ListItem key={product.id} divider>
-                                                <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
-                                                <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
-                                                <IconButton
-                                                    edge="end"
-                                                    aria-label="update"
-                                                    onClick={() => setUpdateProduct(product)}>
-                                                    <EditIcon />
-                                                </IconButton>
-                                                <IconButton
-                                                    edge="end"
-                                                    aria-label="delete"
-                                                    onClick={() => setDeleteProduct(product)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </ListItem>
-                                        </List>
-                                    )}
+                                <TabPanel key={restaurant} value={restaurant}>
+                                    <TabList onChange={(event, newType) => handleTypeClick(event, newType)} aria-label="type list">
+                                        <Tab key="全部" label="全部" value="all" sx={{ border: 1, borderRadius: 2, backgroundColor: currentType === "all" ? "#D0D0D0" : "" }} />
+                                        {types.filter((type) => type.restaurant === restaurant).map((type) =>
+                                            <Tab key={type.type} label={type.type} value={type.type} sx={{ border: 1, borderRadius: 2, backgroundColor: currentType === type.type ? "#D0D0D0" : "" }} />
+                                        )}
+                                    </TabList>
+
+                                    {/* 間隔*/}
+                                    <div style={{ margin: '20px' }}></div>
+
+                                    <Grid container spacing={2}>
+                                        {currentProducts.map((product) => (
+                                            <Grid key={product.id} item xs={6}>
+                                                <Box sx={{
+                                                    border: 1,
+                                                    borderRadius: 2,
+                                                    p: 2,
+                                                    width: '600px',
+                                                    hieght: '200px',
+                                                }}>
+                                                    {/* <Image
+                                                        src={product.photo}
+                                                        alt="Image"
+                                                        priority={true}
+                                                        width={50}
+                                                        height={50}
+                                                    /> */}
+                                                    <ListItemText
+                                                        primary={product.desc}
+                                                        secondary={
+                                                            <>
+                                                                價格: ${product.price}
+                                                                <br />
+                                                                種類: {product.type}
+                                                                <br />
+                                                                <IconButton onClick={() => handleHeartClick(product.id)}>
+                                                                    {userLikes[product.id] ? <FavoriteIcon color="secondary" /> : <FavoriteBorderIcon />}
+                                                                </IconButton>
+                                                                <span>{product.hearts}</span>
+                                                            </>
+                                                        }
+                                                    />
+                                                </Box>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+
+                                    {/* 間隔*/}
+                                    <div style={{ margin: '20px' }}></div>
+
+                                    <div>
+                                    <MDBBtn style={{fontFamily:'iansui'}} color='dark' onClick={handlePrevPage} disabled={currentPage[currentType] === 1}>上一頁</MDBBtn >
+                                        <span style={{fontFamily:'iansui'}}>{` 第 ${currentPage[currentType]} 頁 / 共 ${pageCount} 頁 `}</span>
+                                        <MDBBtn style={{fontFamily:'iansui'}} onClick={handleNextPage} disabled={currentPage[currentType] === pageCount}>下一頁</MDBBtn >
+                                    </div>
                                 </TabPanel>
                             ))}
                         </TabContext>
-
-                        <Fab color="primary" aria-label="Add" onClick={handleOpenAddOrUpdateDialog} sx={{
-                            position: 'fixed',
-                            right: 8,
-                            top: 8,
-                        }}>
-                            <AddIcon />
-                        </Fab>
-                    </div>
-                }
-            </div>
-        </Box >
+                    </Paper>
+                </div>
+            }
+        </div>
     );
 }
+

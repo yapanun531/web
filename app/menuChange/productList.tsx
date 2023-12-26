@@ -15,7 +15,7 @@ import { getAuth } from 'firebase/auth';
 
 export default function ProductList() {
     const { products, addProduct, deleteProduct, updateProduct, isLoading, restaurants, selectedRestaurant, handleRestaurantClick } = useProducts();
-    const [newProduct, setNewProduct] = React.useState<Product>({ id: "", desc: "", price: 0, res_name: "", type: "", photo: "",hearts:0, heartClicked:false });
+    const [newProduct, setNewProduct] = React.useState<Product>({ id: "", desc: "", price: 0, res_name: "", type: "", photo: "", hearts: 0, heartClicked: false });
     const [addOrUpdateDialogOpen, setAddOrUpdateDialogOpen] = React.useState<boolean>(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState<boolean>(false);
 
@@ -54,7 +54,7 @@ export default function ProductList() {
         }
     }
     const getDisplayName = getAuth().currentUser?.displayName;
-    
+
 
     const handleOpenAddOrUpdateDialog = () => {
         setAddOrUpdateDialogOpen(true);
@@ -88,7 +88,7 @@ export default function ProductList() {
     }
 
     const resetProduct = () => {
-        setNewProduct({ id: "", desc: "", price: 0, res_name: "", type: "", photo: "",hearts:0, heartClicked:false })
+        setNewProduct({ id: "", desc: "", price: 0, res_name: "", type: "", photo: "", hearts: 0, heartClicked: false })
     }
 
     function setUpdateProduct(product: Product) {
@@ -106,10 +106,10 @@ export default function ProductList() {
         handleCloseDeleteDialog();
         resetProduct();
     }
-    
-    
+
+
     return (
-        
+
         <Box sx={{
             width: '90vw',
             height: '54vh',
@@ -118,7 +118,7 @@ export default function ProductList() {
             color: 'black',
             textAlign: 'left'
         }}>
-            
+
             <Dialog open={addOrUpdateDialogOpen} onClose={handleCloseAddOrUpdateDialog} aria-labelledby={newProduct.id === "" ? "新增產品" : "編輯產品"}>
                 <DialogTitle>{newProduct.id === "" ? "新增產品" : "更新產品"}</DialogTitle>
                 <DialogContent>
@@ -129,7 +129,7 @@ export default function ProductList() {
                         <InputLabel id="res_name">餐廳名稱</InputLabel>
                         <Select labelId="res_name" label="餐廳名稱" value={newProduct.res_name} onChange={handleChange}>
                             {restaurants.map((restaurant: string) => (
-                                <MenuItem value={restaurant}>{restaurant}</MenuItem>
+                                <MenuItem value={restaurant} key={restaurant}>{restaurant}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>
@@ -170,22 +170,22 @@ export default function ProductList() {
             <div>
                 {isLoading ? <LinearProgress /> :
                     <div>
-                        
+
                         <TabContext value={selectedRestaurant}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <TabList onChange={handleRestaurantClick} aria-label="restaurant list">
-                                {restaurants
-                                .filter((restaurant) => products.some(product => product.res_name === restaurant && product.res_name  === getDisplayName))
-                                .map((restaurant: string) => (
-                                    <Tab label={restaurant} value={restaurant} />
-                                ))}
+                                    {restaurants
+                                        .filter((restaurant) => products.some(product => product.res_name === restaurant && product.res_name === getDisplayName))
+                                        .map((restaurant: string) => (
+                                            <Tab label={restaurant} value={restaurant} key={restaurant} />
+                                        ))}
                                 </TabList>
                             </Box>
                             <div style={{ display: "flex", justifyContent: "flex-end" }}>
                                 <Button onClick={handleOpenAddOrUpdateDialog} variant='contained'>新增產品</Button>
                             </div>
                             {restaurants.map((restaurant: string) => (
-                                <TabPanel value={restaurant}>
+                                <TabPanel value={restaurant} key={restaurant}>
                                     {products.filter((product) => product.res_name === restaurant).map((product) =>
                                         <List key={product.id}>
                                             <ListItem key={product.id} divider>
@@ -210,7 +210,7 @@ export default function ProductList() {
                             ))}
                         </TabContext>
 
-                        
+
 
                         <Fab color="primary" aria-label="Add" onClick={handleOpenAddOrUpdateDialog} sx={{
                             position: 'fixed',
@@ -224,5 +224,5 @@ export default function ProductList() {
             </div>
         </Box >
     );
-            
+
 }

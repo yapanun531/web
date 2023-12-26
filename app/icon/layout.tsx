@@ -1,10 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Menu from './menu'
-import ThemeRegistry from './_theme/theme.registory'
-import { AuthContextProvider } from './account/AuthContext'
-import { Button } from 'antd';
+import Menu from '../menu'
+import ThemeRegistry from '../_theme/theme.registory'
+import { AuthContextProvider } from '../account/AuthContext'
 import 'mdb-react-ui-kit/dist/css/mdb.min.css'
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import React from 'react'
@@ -25,18 +24,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-const sss={
-  display: 'flex',
-  paddingTop:'17px',
-  paddingLeft:'17px',
-  backgroundColor:'#FF95CA'
+  const sss = {
+    display: 'flex',
+    paddingTop: '17px',
+    paddingLeft: '17px',
+    backgroundColor: '#FF95CA'
 
-}
+  }
 
-const icon={
-  paddingLeft:'60%'
-  
-}
+  const icon = {
+    paddingLeft: '60%'
+
+  }
 
 
 
@@ -44,12 +43,12 @@ const icon={
     <html lang="en">
       <body className={inter.className}>
         <div style={sss}>
-        <h1>輔仁大學學餐菜單</h1>
-        <div  style={icon}>
-        <AuthContextProvider>
-        <Icon/>
-        </AuthContextProvider>
-        </div>
+          <h1>輔仁大學學餐菜單</h1>
+          <div style={icon}>
+            <AuthContextProvider>
+              <Icon />
+            </AuthContextProvider>
+          </div>
         </div>
         <ThemeRegistry>
           <AuthContextProvider>
@@ -58,7 +57,7 @@ const icon={
           </AuthContextProvider>
         </ThemeRegistry>
       </body>
-      
+
     </html>
   )
 }

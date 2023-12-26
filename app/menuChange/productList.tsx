@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { Box, List, ListItem, ListItemText, TextField, Button, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, IconButton, Fab, LinearProgress, Tab, MenuItem, InputLabel, FormControl } from "@mui/material";
+import { Box, List, ListItem, ListItemText, TextField, Button, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, IconButton, Fab, LinearProgress, Tab, MenuItem, InputLabel, FormControl, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { TabList, TabContext, TabPanel } from '@mui/lab'
 import Image from 'next/image'
 import CloseIcon from '@mui/icons-material/Close';
@@ -184,30 +184,50 @@ export default function ProductList() {
                             <div style={{ display: "flex", justifyContent: "flex-end" }}>
                                 <Button onClick={handleOpenAddOrUpdateDialog} variant='contained'>新增產品</Button>
                             </div>
-                            {restaurants.map((restaurant: string) => (
-                                <TabPanel value={restaurant} key={restaurant}>
-                                    {products.filter((product) => product.res_name === restaurant).map((product) =>
-                                        <List key={product.id}>
-                                            <ListItem key={product.id} divider>
-                                                <Image src={product.photo} alt='Image' priority={true} width={50} height={50}></Image>
-                                                <ListItemText primary={product.desc} secondary={<>價格: ${product.price}<br />種類: {product.type}</>} />
-                                                <IconButton
-                                                    edge="end"
-                                                    aria-label="update"
-                                                    onClick={() => setUpdateProduct(product)}>
-                                                    <EditIcon />
-                                                </IconButton>
-                                                <IconButton
-                                                    edge="end"
-                                                    aria-label="delete"
-                                                    onClick={() => setDeleteProduct(product)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </ListItem>
-                                        </List>
-                                    )}
-                                </TabPanel>
-                            ))}
+
+                            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 500 }} aria-label="simple table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>商品名稱</TableCell>
+                                            <TableCell align="left">價格</TableCell>
+                                            <TableCell align="left">種類</TableCell>
+                                            <TableCell align="left">操作</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+
+
+
+                                        {products.map((product) =>
+                                            <TableRow
+                                                key={product.id}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell component="th" scope="row">{product.desc}</TableCell>
+                                                <TableCell align="left">{product.price}</TableCell>
+                                                <TableCell align="left">{product.type}</TableCell>
+                                                <TableCell align="left">
+                                                    <IconButton
+                                                        edge="end"
+                                                        aria-label="update"
+                                                        onClick={() => setUpdateProduct(product)}>
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                    <IconButton
+                                                        edge="end"
+                                                        aria-label="delete"
+                                                        onClick={() => setDeleteProduct(product)}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
+
+
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </TabContext>
 
 

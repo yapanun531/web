@@ -3,6 +3,7 @@ import app from "@/app/_firebase/Config"
 import { useEffect, useState } from "react";
 import { Product } from "../_settings/interfaces";
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+import { getAuth } from "firebase/auth";
 
 export default function useProducts() {
     const db = getFirestore(app);
@@ -12,6 +13,7 @@ export default function useProducts() {
     const [products, setProducts] = useState<Product[]>([]);
     const [restaurants, setRestaurants] = useState<string[]>([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState('1');
+    const shop = getAuth().currentUser?.displayName;
 
     useEffect(() => {
         async function fetchData() {
@@ -20,9 +22,10 @@ export default function useProducts() {
             const restaurantList: string[] = [];
             const menuPromises: any[] = []; //等待異步
             //let photo = '鍋貼.jpg';
-            for (const shop of querySnapshop.docs) {
-                const querySnapshotMenu = await getDocs(collection(db, "LiYuan/" + shop.id + "/menu"));
-                restaurantList.push(shop.id);
+            restaurantList.push(String(shop))
+            
+                const querySnapshotMenu = await getDocs(collection(db, "LiYuan/" + shop + "/menu"));
+
 
                 for (const menu of querySnapshotMenu.docs) {
                     //if (menu.exists()) {
@@ -42,7 +45,7 @@ export default function useProducts() {
                     };
                     menuPromises.push(Promise.resolve(menuItem));
                 }
-            }
+            
             //使用Promise.all等待所有異步操作完成
             Promise.all(menuPromises).then((menuItemsArrays) => {
                 // Concatenate all menu items from different shops

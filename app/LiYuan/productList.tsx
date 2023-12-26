@@ -1,25 +1,28 @@
 'use client';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Box, Paper, LinearProgress, Tab, Grid, ListItemText } from "@mui/material";
+import { Box, Paper, LinearProgress, Tab, Grid, ListItemText, IconButton } from "@mui/material";
 import { TabList, TabContext, TabPanel } from '@mui/lab'
 import Image from 'next/image'
 import useProducts from './useProduct';
 import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import '../globals.css';
 import { Product } from '../_settings/interfaces';
 
 export default function ProductList() {
-    const { products, isLoading, selectedRestaurant, handleRestaurantClick, restaurants, types, selectedType, handleTypeClick, page } = useProducts();
+    const { products, isLoading, selectedRestaurant, handleRestaurantClick, restaurants, types, selectedType, handleTypeClick, updateProduct } = useProducts();
     const [currentPage, setCurrentPage] = useState<Record<string, number>>({});
-    const [currentType, setCurrentType] = useState<string>('all'); // 新增 currentType 狀態
+    const [currentType, setCurrentType] = useState<string>('all');
+    const [likedProducts, setLikedProducts] = useState<string[]>([]);
 
     useEffect(() => {
         setCurrentPage((prevPages) => ({
             ...prevPages,
             [selectedType]: prevPages[selectedType] || 1,
         }));
-        setCurrentType(selectedType); // 更新 currentType
+        setCurrentType(selectedType);
     }, [selectedType]);
 
     useEffect(() => {
@@ -54,6 +57,33 @@ export default function ProductList() {
 
     const [currentProducts, setCurrentProducts] = useState<Product[]>([]);
     const [pageCount, setPageCount] = useState<number>(0);
+
+    const [userLikes, setUserLikes] = useState<Record<string, boolean>>({});
+
+    const handleHeartClick = async (productId: string) => {
+        const liked = userLikes[productId] || false;
+
+        const updatedProducts = currentProducts.map((product) => {
+            if (product.id === productId) {
+                const newHearts = liked ? product.hearts - 1 : product.hearts + 1;
+                return {
+                    ...product,
+                    heartClicked: !liked,
+                    hearts: newHearts,
+                };
+            }
+            return product;
+        });
+
+        setCurrentProducts(updatedProducts);
+
+        const updatedProduct = updatedProducts.find((product) => product.id === productId);
+        if (updatedProduct) {
+            updateProduct(updatedProduct, selectedRestaurant);
+        }
+
+        setUserLikes((prevUserLikes) => ({ ...prevUserLikes, [productId]: !liked }));
+    };
 
     return (
         <div>
@@ -107,6 +137,11 @@ export default function ProductList() {
                                                                 價格: ${product.price}
                                                                 <br />
                                                                 種類: {product.type}
+                                                                <br />
+                                                                <IconButton onClick={() => handleHeartClick(product.id)}>
+                                                                    {userLikes[product.id] ? <FavoriteIcon color="secondary" /> : <FavoriteBorderIcon />}
+                                                                </IconButton>
+                                                                <span>{product.hearts}</span>
                                                             </>
                                                         }
                                                     />
@@ -132,3 +167,4 @@ export default function ProductList() {
         </div>
     );
 }
+

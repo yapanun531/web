@@ -172,15 +172,6 @@ export default function ProductList() {
                     <div>
 
                         <TabContext value={selectedRestaurant}>
-                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                <TabList onChange={handleRestaurantClick} aria-label="restaurant list">
-                                    {restaurants
-                                        .filter((restaurant) => products.some(product => product.res_name === restaurant && product.res_name === getDisplayName))
-                                        .map((restaurant: string) => (
-                                            <Tab label={restaurant} value={restaurant} key={restaurant} />
-                                        ))}
-                                </TabList>
-                            </Box>
                             <div style={{ display: "flex", justifyContent: "flex-end" }}>
                                 <Button onClick={handleOpenAddOrUpdateDialog} variant='contained'>新增產品</Button>
                             </div>

@@ -18,7 +18,6 @@ export const metadata: Metadata = {
 
 export function Icon() {
   const router = useRouter();
-  const authContext = useContext(AuthContext);
 
   const sss = {
     display: 'flex',
@@ -34,19 +33,19 @@ export function Icon() {
     paddingTop: '12px',
   };
 
-  if (authContext && authContext.displayName !== "") {
-    if (authContext && authContext.displayName === "普通") {
+  if (AuthContext.displayName !== "") {
+    if (AuthContext.displayName === "普通") {
       return (
         <div style={sss}>
           <i className="fas fa-circle-user fa-3x" onClick={() => router.push("/account")}></i>
-          <h5 style={sssss}>使用者 {authContext.email}，您好</h5>
+          <h5 style={sssss}>使用者 {AuthContext.displayName}，您好</h5>
         </div>
       );
     } else {
       return (
         <div style={sss}>
           <i className="fas fa-circle-user fa-3x" onClick={() => router.push("/account")}></i>
-          <h5 style={ssss}>商家 {authContext.displayName} , 您好</h5>
+          <h5 style={ssss}>商家 {AuthContext.displayName} , 您好</h5>
         </div>
       );
     }

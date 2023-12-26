@@ -14,6 +14,8 @@ export default function useProducts() {
     const [types, setTypes] = useState<MenuItem[]>([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState('1');
     const [selectedType, setSelectedType] = useState('1');
+    const [page, setPage] = useState(1);
+
     interface MenuItem {
         restaurant: string;
         type: string;
@@ -115,12 +117,14 @@ export default function useProducts() {
     const handleRestaurantClick = async (event: React.SyntheticEvent, restaurantId: string) => {
         setSelectedType("all");
         setSelectedRestaurant(restaurantId);
+        setPage(1);
     }
 
     const handleTypeClick = async (event: React.SyntheticEvent, typeId: string) => {
         setSelectedType(typeId);
+        setPage(1);
     }
 
-    return { products, addProduct, deleteProduct, updateProduct, handleRestaurantClick, handleTypeClick, isLoading, restaurants, selectedRestaurant, selectedType, types } as const;
+    return { products, addProduct, deleteProduct, updateProduct, handleRestaurantClick, handleTypeClick, isLoading, restaurants, selectedRestaurant, selectedType, types, page } as const;
 
 }

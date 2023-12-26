@@ -10,7 +10,7 @@ import '../globals.css';
 import { Product } from '../_settings/interfaces';
 
 export default function ProductList() {
-    const { products, isLoading, selectedRestaurant, handleRestaurantClick, restaurants, types, selectedType, handleTypeClick } = useProducts();
+    const { products, isLoading, selectedRestaurant, handleRestaurantClick, restaurants, types, selectedType, handleTypeClick, page } = useProducts();
     const [currentPage, setCurrentPage] = useState<Record<string, number>>({});
     const [currentType, setCurrentType] = useState<string>('all'); // 新增 currentType 狀態
 
@@ -81,18 +81,18 @@ export default function ProductList() {
                                     </TabList>
 
                                     {/* 間隔*/}
-                                    <div style={{margin: '20px' }}></div>
+                                    <div style={{ margin: '20px' }}></div>
 
                                     <Grid container spacing={2}>
                                         {currentProducts.map((product) => (
                                             <Grid key={product.id} item xs={6}>
                                                 <Box sx={{
-                                                            border: 1,
-                                                            borderRadius: 2,
-                                                            p: 2,
-                                                            width: '600px',
-                                                            hieght: '200px',
-                                                        }}>
+                                                    border: 1,
+                                                    borderRadius: 2,
+                                                    p: 2,
+                                                    width: '600px',
+                                                    hieght: '200px',
+                                                }}>
                                                     <Image
                                                         src={product.photo}
                                                         alt="Image"
@@ -114,10 +114,10 @@ export default function ProductList() {
                                             </Grid>
                                         ))}
                                     </Grid>
-                                    
+
                                     {/* 間隔*/}
-                                    <div style={{margin: '20px' }}></div>
-                                    
+                                    <div style={{ margin: '20px' }}></div>
+
                                     <div>
                                         <button onClick={handlePrevPage} disabled={currentPage[currentType] === 1}>上一頁</button>
                                         <span>{` 第 ${currentPage[currentType]} 頁 / 共 ${pageCount} 頁 `}</span>

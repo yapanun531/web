@@ -51,12 +51,14 @@ export function Icon() {
       );
     }
     else{
+      content = (
       <div style={sss}>
       <Link href="/account">
         <i className="fas fa-circle-user fa-3x"></i>
       </Link>
       <h5 style={ssss}>商家 {authContext.displayName} , 您好</h5>
     </div>
+    );
     }
   } else {
     content = (
@@ -94,13 +96,12 @@ export function Menu() {
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="lab API tabs example">
-                <Tab label="誠園" onClick={() => router.push("/ChengYuanCustomer")} value="1" />
-                <Tab label="心園" onClick={() => router.push("/XinYuanCustomer")} value="2" />
-                <Tab label="理園" onClick={() => router.push("/LiYuanCustomer")} value="3" />
-                <Tab label="輔園" onClick={() => router.push("/FuYuanCustomer")} value="4" />
-                <Tab label="登入/註冊" onClick={() => router.push("/account")} value="5" />
-                <Tab label="菜單管理" onClick={() => router.push("/menuChange")} value="6" />
-                <Tab label="排行榜" onClick={() => router.push("/RankingList")} value="7" />
+                <Tab label="誠園" onClick={() => router.push("/ChengYuan")} value="1" />
+                <Tab label="心園" onClick={() => router.push("/XinYuan")} value="2" />
+                <Tab label="理園" onClick={() => router.push("/LiYuan")} value="3" />
+                <Tab label="輔園" onClick={() => router.push("/FuYuan")} value="4" />
+                <Tab label="登出" onClick={() => router.push("/account")} value="5" />
+                <Tab label="排行榜" onClick={() => router.push("/RankingList")} value="6" />
               </TabList>
             </Box>
           </TabContext>
@@ -116,11 +117,11 @@ export function Menu() {
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="lab API tabs example">
-                <Tab label="誠園" onClick={() => router.push("/ChengYuanCustomer")} value="1" />
-                <Tab label="心園" onClick={() => router.push("/XinYuanCustomer")} value="2" />
-                <Tab label="理園" onClick={() => router.push("/LiYuanCustomer")} value="3" />
-                <Tab label="輔園" onClick={() => router.push("/FuYuanCustomer")} value="4" />
-                <Tab label="登入/註冊" onClick={() => router.push("/account")} value="5" />
+                <Tab label="誠園" onClick={() => router.push("/ChengYuan")} value="1" />
+                <Tab label="心園" onClick={() => router.push("/XinYuan")} value="2" />
+                <Tab label="理園" onClick={() => router.push("/LiYuan")} value="3" />
+                <Tab label="輔園" onClick={() => router.push("/FuYuan")} value="4" />
+                <Tab label="登出" onClick={() => router.push("/account")} value="5" />
                 <Tab label="帳號管理" onClick={() => router.push("/Menager")} value="6" />
                 <Tab label="排行榜" onClick={() => router.push("/RankingList")} value="7" />
               </TabList>
@@ -143,7 +144,7 @@ export function Menu() {
                 <Tab label="心園" onClick={() => router.push("/XinYuan")} value="2" />
                 <Tab label="理園" onClick={() => router.push("/LiYuan")} value="3" />
                 <Tab label="輔園" onClick={() => router.push("/FuYuan")} value="4" />
-                <Tab label="登入/註冊" onClick={() => router.push("/account")} value="5" />
+                <Tab label="登出" onClick={() => router.push("/account")} value="5" />
                 <Tab label="菜單管理" onClick={() => router.push("/menuChange")} value="6" />
                 <Tab label="排行榜" onClick={() => router.push("/RankingList")} value="7" />
               </TabList>

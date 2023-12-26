@@ -87,7 +87,7 @@ export default function Account() {
     try {
         if (status === "註冊") {
           const res = await createUserWithEmailAndPassword(auth, account.email, account.password);
-          await updateProfile(res.user, { displayName: account.name });
+          await updateProfile(res.user, { displayName: "普通" });
           setMessage(`註冊成功，歡迎 ${res.user?.email}`);
           // console.log(res)
         }

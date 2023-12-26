@@ -8,7 +8,7 @@ import { Button } from 'antd';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css'
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import React from 'react'
-import Icon from './icon'
+//import Icon from './icon'
 
 
 
@@ -45,11 +45,11 @@ const icon={
       <body className={inter.className}>
         <div style={sss}>
         <h1>輔仁大學學餐菜單</h1>
-        <div  style={icon}>
+          {/*<div  style={icon}>
         <AuthContextProvider>
         <Icon/>
         </AuthContextProvider>
-        </div>
+        </div>*/}
         </div>
         <ThemeRegistry>
           <AuthContextProvider>

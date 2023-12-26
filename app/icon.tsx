@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AuthContext } from './account/AuthContext';
 import { useContext } from 'react';
 
-const Icon = () => {
+export default function Icon() {
     const router = useRouter();
     const authContext = useContext(AuthContext);
 
@@ -23,35 +23,29 @@ const Icon = () => {
         paddingTop: '12px',
     };
 
-    // 只在客戶端執行的邏輯
-    if (typeof window !== 'undefined') {
-        if (authContext.displayName !== "") {
-            if (authContext.displayName === "普通") {
-                return (
-                    <div style={sss}>
-                        <i className="fas fa-circle-user fa-3x" onClick={() => router.push("/account")}></i>
-                        <h5 style={sssss}>使用者 {authContext.email}，您好</h5>
-                    </div>
-                );
-            } else {
-                return (
-                    <div style={sss}>
-                        <i className="fas fa-circle-user fa-3x" onClick={() => router.push("/account")}></i>
-                        <h5 style={ssss}>商家 {authContext.displayName} , 您好</h5>
-                    </div>
-                );
-            }
+    if (authContext && authContext.displayName !== "") {
+        if (authContext && authContext.displayName === "普通") {
+            return (
+                <div style={sss}>
+                    <i className="fas fa-circle-user fa-3x" onClick={() => router.push("/account")}></i>
+                    <h5 style={sssss}>使用者 {authContext.email}，您好</h5>
+                </div>
+            );
         } else {
             return (
                 <div style={sss}>
                     <i className="fas fa-circle-user fa-3x" onClick={() => router.push("/account")}></i>
-                    <h5 style={ssss}>登入/註冊</h5>
+                    <h5 style={ssss}>商家 {authContext.displayName} , 您好</h5>
                 </div>
             );
         }
+    } else {
+        return (
+            <div style={sss}>
+                <i className="fas fa-circle-user fa-3x" onClick={() => router.push("/account")}></i>
+                <h5 style={ssss}>登入/註冊</h5>
+            </div>
+        );
     }
 
-    return null; // 避免在伺服器端返回非法內容
-};
-
-export default Icon;
+}

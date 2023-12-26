@@ -7,6 +7,7 @@ export type Product = {
   res_name: string;
   photo: string;
   hearts: number;
+  heartClicked: boolean;
 };
 
 export type MenuItems = {

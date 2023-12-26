@@ -32,6 +32,17 @@ export default function useProducts() {
         return menuItems;
     }
 
+    const [userLikes, setUserLikes] = useState<Record<string, boolean>>({});
+
+    useEffect(() => {
+      // 重新設定 userLikes 狀態，將所有愛心的產品標記為 false
+      const initialUserLikes: Record<string, boolean> = {};
+      products.forEach((product) => {
+        initialUserLikes[product.id] = false;
+      });
+      setUserLikes(initialUserLikes);
+    }, [products]);
+
     useEffect(() => {
         async function fetchData() {
             setIsLoading(true);
@@ -60,6 +71,8 @@ export default function useProducts() {
                         price: menu.data().price,
                         type: menu.data().type,
                         res_name: menu.data().res_name,
+                        hearts: menu.data().hearts || 0,
+                        heartClicked: false,
                         //photo: photoURL
                     };
                     menuPromises.push(Promise.resolve(menuItem));
@@ -83,7 +96,7 @@ export default function useProducts() {
     //利用子集合menu中的res_name與doc.id一致，找到正確餐廳修改其collection中的資料
     async function addProduct(product: Product, res_name: string) {
         const docRef = await addDoc(collection(db, `LiYuan/${res_name}/menu`),
-            { desc: product.desc, price: product.price, type: product.type, res_name: product.res_name });
+            { desc: product.desc, price: product.price, type: product.type, res_name: product.res_name, hearts: 0, });
         console.log("Document written with ID: ", docRef.id);
         setUpdated((currentValue) => currentValue + 1)
     }
@@ -103,7 +116,7 @@ export default function useProducts() {
         try {
             const db = getFirestore(app);
             await updateDoc(doc(db, `LiYuan/${res_name}/menu`, product.id),
-                { desc: product.desc, price: product.price, type: product.type, res_name: product.res_name });
+                { desc: product.desc, price: product.price, type: product.type, res_name: product.res_name,  hearts: product.hearts, });
             setUpdated((currentValue) => currentValue + 1)
         }
         catch (error) {
@@ -121,6 +134,6 @@ export default function useProducts() {
         setSelectedType(typeId);
     }
 
-    return { products, addProduct, deleteProduct, updateProduct, handleRestaurantClick, handleTypeClick, isLoading, restaurants, selectedRestaurant, selectedType, types } as const;
+    return { products, addProduct, deleteProduct, updateProduct, handleRestaurantClick, handleTypeClick, isLoading, restaurants, selectedRestaurant, selectedType, types, userLikes } as const;
 
 }

@@ -129,7 +129,7 @@ export default function ProductList() {
                         <InputLabel id="res_name">餐廳名稱</InputLabel>
                         <Select labelId="res_name" label="餐廳名稱" value={newProduct.res_name} onChange={handleChange}>
                             {restaurants.map((restaurant: string) => (
-                                <MenuItem value={restaurant}>{restaurant}</MenuItem>
+                                <MenuItem value={restaurant} key={restaurant}>{restaurant}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>
@@ -177,7 +177,7 @@ export default function ProductList() {
                                 {restaurants
                                 .filter((restaurant) => products.some(product => product.res_name === restaurant && product.res_name  === getDisplayName))
                                 .map((restaurant: string) => (
-                                    <Tab label={restaurant} value={restaurant} />
+                                    <Tab label={restaurant} value={restaurant} key={restaurant} />
                                 ))}
                                 </TabList>
                             </Box>
@@ -185,7 +185,7 @@ export default function ProductList() {
                                 <Button onClick={handleOpenAddOrUpdateDialog} variant='contained'>新增產品</Button>
                             </div>
                             {restaurants.map((restaurant: string) => (
-                                <TabPanel value={restaurant}>
+                                <TabPanel value={restaurant} key={restaurant}>
                                     {products.filter((product) => product.res_name === restaurant).map((product) =>
                                         <List key={product.id}>
                                             <ListItem key={product.id} divider>

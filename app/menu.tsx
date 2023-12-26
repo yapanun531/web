@@ -65,7 +65,7 @@ export function Icon() {
 }
 
 
-export default function Menu() {
+export function Menu() {
   const [value, setValue] = React.useState('1');
   const router = useRouter()
   const pathname = usePathname();

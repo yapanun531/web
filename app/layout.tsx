@@ -1,11 +1,11 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Menu from './menu'
+import { Menu, Icon } from './menu'
 import ThemeRegistry from './_theme/theme.registory'
 import { AuthContextProvider } from './account/AuthContext'
 import React from 'react'
-import Icon from './menu'
+
 
 const inter = Inter({ subsets: ['latin'] })
 

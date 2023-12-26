@@ -7,7 +7,7 @@ import { useContext } from 'react';
 
 const Icon = () => {
     const router = useRouter();
-    const authContext = typeof window !== 'undefined' ? useContext(AuthContext) : null;
+    const authContext = useContext(AuthContext);
 
     const sss = {
         display: 'flex',
@@ -25,7 +25,7 @@ const Icon = () => {
 
     // 只在客戶端執行的邏輯
     if (typeof window !== 'undefined') {
-        if (authContext.displayName !== "") {
+        if (authContext && authContext.displayName !== "") {
             if (authContext.displayName === "普通") {
                 return (
                     <div style={sss}>

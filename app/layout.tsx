@@ -41,9 +41,11 @@ export default function RootLayout({
         <div style={sss}>
           <h1>輔仁大學學餐菜單</h1>
           <div style={icon}>
-            <AuthContextProvider>
-              <Icon />
-            </AuthContextProvider>
+            <ThemeRegistry>
+              <AuthContextProvider>
+                <Icon />
+              </AuthContextProvider>
+            </ThemeRegistry>
           </div>
         </div>
         <ThemeRegistry>

@@ -177,7 +177,7 @@ export default function ProductList() {
                                     {restaurants
                                         .filter((restaurant) => products.some(product => product.res_name === restaurant && product.res_name === getDisplayName))
                                         .map((restaurant: string) => (
-                                            <Tab label={restaurant} value={restaurant} key={restaurant} />
+                                            <Tab label={restaurant} value={restaurant} />
                                         ))}
                                 </TabList>
                             </Box>

@@ -7,7 +7,7 @@ import { AuthContext } from './account/AuthContext';
 import { useContext } from 'react';
 
 
-export default function icon(){
+export default function Icon(){
     
     const router = useRouter()
     const authContext = useContext(AuthContext);

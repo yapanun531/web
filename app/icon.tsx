@@ -3,9 +3,8 @@ import 'mdb-react-ui-kit/dist/css/mdb.min.css'
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { AuthContext } from '../account/AuthContext';
+import { AuthContext } from './account/AuthContext';
 import { useContext } from 'react';
-
 
 export default function Icon() {
 
@@ -23,7 +22,6 @@ export default function Icon() {
     const sssss = {
         paddingTop: '12px',
     }
-
 
     if (authContext.displayName != "") {
         if (authContext.displayName == "普通") {
@@ -44,8 +42,6 @@ export default function Icon() {
             )
         }
     }
-
-
 
     else {
         return (

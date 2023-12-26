@@ -1,15 +1,13 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Menu from '../menu'
-import ThemeRegistry from '../_theme/theme.registory'
-import { AuthContextProvider } from '../account/AuthContext'
+import Menu from './menu'
+import ThemeRegistry from './_theme/theme.registory'
+import { AuthContextProvider } from './account/AuthContext'
 import 'mdb-react-ui-kit/dist/css/mdb.min.css'
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import React from 'react'
 import Icon from './icon'
-
-
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,8 +34,6 @@ export default function RootLayout({
     paddingLeft: '60%'
 
   }
-
-
 
   return (
     <html lang="en">

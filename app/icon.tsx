@@ -7,7 +7,7 @@ import { useContext } from 'react';
 
 const Icon = () => {
     const router = useRouter();
-    const authContext = useContext(AuthContext);
+    const authContext = typeof window !== 'undefined' ? useContext(AuthContext) : null;
 
     const sss = {
         display: 'flex',

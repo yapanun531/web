@@ -29,7 +29,7 @@ export default function RootLayout({
   }
 
   const icon = {
-    paddingLeft: '60%'
+    paddingLeft: '52%'
 
   }
 

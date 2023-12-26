@@ -230,15 +230,6 @@ export default function ProductList() {
                             </TableContainer>
                         </TabContext>
 
-
-
-                        <Fab color="primary" aria-label="Add" onClick={handleOpenAddOrUpdateDialog} sx={{
-                            position: 'fixed',
-                            right: 8,
-                            top: 8,
-                        }}>
-                            <AddIcon />
-                        </Fab>
                     </div>
                 }
             </div>

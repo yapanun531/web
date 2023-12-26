@@ -35,7 +35,7 @@ export function Icon() {
       content = (
         <div style={sss}>
           <Link href="/account">
-            <i className="fas fa-circle-user fa-3x"></i>
+            <i style={{color:'black'}} className="fas fa-circle-user fa-3x"></i>
           </Link>
           <h5 style={sssss}>使用者 {authContext.email}，您好</h5>
         </div>
@@ -54,7 +54,7 @@ export function Icon() {
       content = (
       <div style={sss}>
       <Link href="/account">
-        <i className="fas fa-circle-user fa-3x"></i>
+        <i style={{color:'black'}} className="fas fa-circle-user fa-3x"></i>
       </Link>
       <h5 style={ssss}>商家 {authContext.displayName} , 您好</h5>
     </div>
@@ -64,7 +64,7 @@ export function Icon() {
     content = (
       <div style={sss}>
         <Link href="/account">
-          <i className="fas fa-circle-user fa-3x"></i>
+          <i style={{color:'black'}} className="fas fa-circle-user fa-3x"></i>
         </Link>
         <h5 style={ssss}>登入/註冊</h5>
       </div>

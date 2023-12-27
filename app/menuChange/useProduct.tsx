@@ -14,17 +14,19 @@ export default function useProducts() {
     const [restaurants, setRestaurants] = useState<string[]>([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState('1');
     const shop = getAuth().currentUser?.displayName;
+    const collections = ["LiYuan", "ChengYuan", "XinYuan", "FuYuan"];
 
     useEffect(() => {
         async function fetchData() {
             setIsLoading(true);
-            const querySnapshop = await getDocs(collection(db, "LiYuan"));
+            for (const collectionName of collections) {
+            const querySnapshop = await getDocs(collection(db, collectionName));
             const restaurantList: string[] = [];
             const menuPromises: any[] = []; //等待異步
             //let photo = '鍋貼.jpg';
             restaurantList.push(String(shop))
             
-                const querySnapshotMenu = await getDocs(collection(db, "LiYuan/" + shop + "/menu"));
+                const querySnapshotMenu = await getDocs(collection(db, `${collectionName}/${shop}/menu`));
 
 
                 for (const menu of querySnapshotMenu.docs) {
@@ -57,21 +59,24 @@ export default function useProducts() {
             setRestaurants(restaurantList);
             setIsLoading(false);
         }
+        }
         fetchData();
     }, [db, updated]);
 
     //利用子集合menu中的res_name與doc.id一致，找到正確餐廳修改其collection中的資料
     async function addProduct(product: Product, res_name: string) {
-        const docRef = await addDoc(collection(db, `LiYuan/${res_name}/menu`),
+        for (const collectionName of collections) {
+        const docRef = await addDoc(collection(db, `${collectionName}/${res_name}/menu`),
             { desc: product.desc, price: product.price, type: product.type, res_name: product.res_name });
         console.log("Document written with ID: ", docRef.id);
-        setUpdated((currentValue) => currentValue + 1)
+        setUpdated((currentValue) => currentValue + 1)}
     }
 
     async function deleteProduct(id: string, res_name: string) {
         try {
             const db = getFirestore(app);
-            await deleteDoc(doc(db, `LiYuan/${res_name}/menu`, id));
+            for (const collectionName of collections) {
+            await deleteDoc(doc(db, `${collectionName}/${res_name}/menu`, id));}
             setUpdated((currentValue) => currentValue + 1)
         }
         catch (error) {
@@ -82,9 +87,10 @@ export default function useProducts() {
     async function updateProduct(product: Product, res_name: string) {
         try {
             const db = getFirestore(app);
-            await updateDoc(doc(db, `LiYuan/${res_name}/menu`, product.id),
+            for (const collectionName of collections) {
+            await updateDoc(doc(db, `${collectionName}/${res_name}/menu`, product.id),
                 { desc: product.desc, price: product.price, type: product.type, res_name: product.res_name });
-            setUpdated((currentValue) => currentValue + 1)
+            setUpdated((currentValue) => currentValue + 1)}
         }
         catch (error) {
             console.error(error);
